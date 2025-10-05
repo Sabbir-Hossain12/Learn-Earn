@@ -24,9 +24,12 @@
                                 <div class="gridarea__small__button gridarea__small__button__1">
                                     <div class="grid__badge">{{$course->class->title}}</div>
                                 </div>
-{{--                                <div class="gridarea__small__icon">--}}
-{{--                                    <a href="#"><i class="icofont-heart-alt"></i></a>--}}
-{{--                                </div>--}}
+                                <div class="gridarea__small__icon">
+                                    <a href="javascript:void(0);" class="wishlist" data-course-id="{{$course->id}}">
+                                        <i class="icofont-heart-alt "></i>
+                                    </a>
+                                </div>
+
                             </div>
 
                             <div class="gridarea__content">

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    
+
     <!--SEO-->
     <title>{{$basicInfo->meta_title ?? 'schoolmathematics'}} </title>
     <meta name="description" content="{{$basicInfo->meta_desc ?? ''}}">
@@ -16,14 +16,14 @@
  <!-- Open Graph (Facebook, LinkedIn) -->
     <meta property="og:title" content="{{$basicInfo->meta_title ?? 'schoolmathematics'}}">
     <meta property="og:description" content="{{$basicInfo->meta_desc ?? ''}}">
-    
+
     @if($basicInfo->meta_image)
     <meta property="og:image" content="{{asset($basicInfo->meta_image)}}">
     @endif
-    
+
     <meta property="og:url" content="https://schoolmathematics.com.bd/">
     <meta property="og:type" content="website">
-    
+
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{$basicInfo->meta_title ?? 'schoolmathematics'}}">
@@ -31,7 +31,7 @@
     @if($basicInfo->meta_image)
     <meta name="twitter:image" content="{{asset($basicInfo->meta_image)}}">
     @endif
-    
+
     <!--Fav Icon-->
        <link rel="shortcut icon" type="image/x-icon" href="{{asset($basicInfo->fav_icon ?? 'frontend/img/favicon.ico')}}">
     <!-- Place favicon.ico in the root directory -->
@@ -51,13 +51,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
           integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    
+
     {{-- tostr.js--}}
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-    
-
-
+    <style>
+        .wish-active
+        {
+            color: red !important;
+        }
+    </style>
     @stack('css')
 </head>
 
@@ -91,10 +94,10 @@
 
 
     @yield('content')
-    
+
     @include('Frontend.includes.footer')
 
-    
+
 </main>
 
 
@@ -159,6 +162,44 @@
     }
     toastr.warning("{{ session('warning') }}");
     @endif
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.wishlist').click(function () {
+            var course_id = $(this).data('course-id');
+            let $this = $(this);
+
+            $.ajax({
+                url: "{{ route('add-to-wish') }}",  // your route name
+                type: "POST",
+                data: {
+                    course_id: course_id,
+                    _token: "{{ csrf_token() }}"   // important for Laravel POST
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        if (response.action === 'add') {
+                            // Switch to active heart
+                            $this.find('i').addClass('wish-active');
+                        } else if (response.action === 'remove') {
+                            // Switch back to inactive heart
+                            $this.find('i').removeClass('wish-active');
+
+                        }
+                        toastr.success(response.message);
+                    }
+                    if (response.status === 'error') {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function (xhr) {
+                        toastr.error('Please login to add to wishlist');
+                }
+            });
+        })
+
+    })
 </script>
 
 @stack('js')

@@ -57,6 +57,11 @@ Route::get('/course-list', [CourseController::class,'courseList'])->name('course
 Route::get('/course-details/{slug}', [CourseController::class,'courseDetails'])->name('course-details');
 Route::get('/course-by-class/{slug}', [CourseController::class,'coursesByClass'])->name('course-by-class');
 
+//Wishlist
+
+Route::post('/wishlist', [HomeController::class,'addToWish'])->name('add-to-wish');
+
+
 //Reviews
 Route::post('/review-submit', [CourseController::class,'reviewSubmit'])->name('review.submit');
 
@@ -125,6 +130,7 @@ Route::prefix('student/dashboard')->middleware('student')->name('student.dashboa
     Route::get('/',[DashboardController::class,'index'])->name('index');
     Route::get('/dashboard-summery', [DashboardController::class,'dashboardSummeryPage'])->name('summery');
     Route::get('/dashboard-courses',[DashboardController::class,'dashboardCoursesPage'])->name('courses');
+    Route::get('/dashboard-wish-courses',[DashboardController::class,'dashboardWishCoursePage'])->name('wish-courses');
     Route::get('/dashboard-exam-attempts',[DashboardController::class,'dashboardExamPage'])->name('exam');
     Route::get('/dashboard-exam-solutions/{id}',[DashboardController::class,'examSolution'])->name('exam.solution');
     Route::get('/dashboard-exam-leaderboard/{id}',[DashboardController::class,'examLeaderboard'])->name('exam.leaderboard');

@@ -74,7 +74,7 @@
                     <div class="tab-pane fade active show" id="projects__one" role="tabpanel" aria-labelledby="projects__one">
 
                         <div class="row">
-                            @forelse($courses as $course) 
+                            @forelse($courses as $course)
                             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 aos-init aos-animate" data-aos="fade-up">
                                 <div class="gridarea__wraper gridarea__wraper__2">
                                     <div class="gridarea__img">
@@ -82,9 +82,11 @@
                                         <div class="gridarea__small__button">
                                             <div class="grid__badge">{{$course->class->title}}</div>
                                         </div>
-{{--                                        <div class="gridarea__small__icon">--}}
-{{--                                            <a href="#"><i class="icofont-heart-alt"></i></a>--}}
-{{--                                        </div>--}}
+                                        <div class="gridarea__small__icon">
+                                            <a href="javascript:void(0);" class="wishlist" data-course-id="{{$course->id}}">
+                                                <i class="icofont-heart-alt"></i>
+                                            </a>
+                                        </div>
 
                                     </div>
                                     <div class="gridarea__content">
@@ -131,7 +133,7 @@
 {{--                                                <span>(44)</span>--}}
 {{--                                            </div>--}}
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -231,6 +233,6 @@
 
     </div>
 </div>
-    
+
 @endsection
 

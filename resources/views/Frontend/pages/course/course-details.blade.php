@@ -383,7 +383,7 @@
                                                             </div>
 
                                                         @empty
-                                                            <p>No Review Yet</p>
+                                                            <p class="text-muted">No Review Yet</p>
                                                         @endforelse
                                                     </div>
                                                 </div>

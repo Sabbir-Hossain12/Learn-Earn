@@ -10,6 +10,7 @@ use App\Models\Enrollment;
 use App\Models\Question;
 use App\Models\User;
 use App\Models\QuizAttemptAnswer;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -62,6 +63,17 @@ class DashboardController extends Controller
 
 
         $CoursesPage = view('Frontend.pages.dashboard.include.courses', compact('enrollments'))->render();
+
+        return response()->json(['html' => $CoursesPage]);
+    }
+
+    public function dashboardWishCoursePage()
+    {
+        $student_id = auth()->user()->id;
+
+        $wishCourses = Wishlist::where('user_id', $student_id)->with('course')->get();
+
+        $CoursesPage = view('Frontend.pages.dashboard.include.wishlist', compact('wishCourses'))->render();
 
         return response()->json(['html' => $CoursesPage]);
     }
@@ -174,16 +186,16 @@ class DashboardController extends Controller
 
 
         $examType = Assessment::where('id', $id)->first();
-        
+
         // if ($examType->end_time >= now()) {
 
         //     return response()->json(['html' => '<div class="alert alert-danger">Please Wait till the exam ends</div>']);
         // }
-        
+
         $questions = Question::where('assessment_id', $id)->where('status', 1)->get();
          $attempts= QuizAttemptAnswer::with('question')
             ->where('student_id', auth()->user()->id)->where('assessment_id', $id)->get();
-        
+
         if ($examType->type == 'quiz') {
             $quizView = view('Frontend.pages.dashboard.include.quiz-solution', compact('attempts', 'examType'))->render();
 
@@ -200,33 +212,33 @@ class DashboardController extends Controller
         return response()->json(['html' => '<div class="alert alert-danger">Material Not Found</div>']);
 
     }
-    
-    
+
+
     public function examLeaderboard(Request $request, string $id)
     {
         $exam = Assessment::where('id', $id)->first();
         $student_id = auth()->user()->id;
-        
-        
+
+
         if(($exam->type == 'quiz' && $exam->attempt_type == 'Single') )
         {
             $lists = AssessmentGrade:: where('assessment_id', $id)->orderBy('marks_obtained','desc')->get();
             $leaderboardView = view('Frontend.pages.dashboard.include.leaderboard-quiz',
                     compact('lists', 'exam'))->render();
-                    
+
             return response()->json(['html' => $leaderboardView]);
         }
-        
+
         else if($exam->type == 'assignment' && $exam->attempt_type == 'Single')
         {
             $lists = AssessmentGrade:: where('assessment_id', $id)->orderBy('marks_obtained','desc')->get();
             $leaderboardView = view('Frontend.pages.dashboard.include.leaderboard-assignment',
                     compact('lists', 'exam'))->render();
-                    
+
              return response()->json(['html' => $leaderboardView]);
         }
-        
+
         return response()->json(['html' => '<div class="alert alert-danger">Leaderboard Not Found</div>']);
-        
+
     }
 }

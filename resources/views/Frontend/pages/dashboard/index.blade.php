@@ -1,4 +1,3 @@
-
 @extends('Frontend.layouts.master')
 
 
@@ -15,7 +14,8 @@
                             <div class="dashboardarea__inner student__dashboard__inner">
                                 <div class="dashboardarea__left">
                                     <div class="dashboardarea__left__img">
-                                        <img loading="lazy" src="{{asset($student->profile_image ?? 'frontend/img/teacher/teacher__2.png')}}"
+                                        <img loading="lazy"
+                                             src="{{asset($student->profile_image ?? 'frontend/img/teacher/teacher__2.png')}}"
                                              alt="" height="109px" width="109px">
                                     </div>
                                     <div class="dashboardarea__left__content">
@@ -31,17 +31,17 @@
                                                 </svg>
                                                 {{$enrollments_count ?? 0}} Courses Enrolled
                                             </li>
-{{--                                            <li>--}}
-{{--                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"--}}
-{{--                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"--}}
-{{--                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"--}}
-{{--                                                     class="feather feather-award">--}}
-{{--                                                    <circle cx="12" cy="8" r="7"></circle>--}}
-{{--                                                    <polyline--}}
-{{--                                                            points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>--}}
-{{--                                                </svg>--}}
-{{--                                                8 Certificate--}}
-{{--                                            </li>--}}
+                                            {{--                                            <li>--}}
+                                            {{--                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"--}}
+                                            {{--                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"--}}
+                                            {{--                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"--}}
+                                            {{--                                                     class="feather feather-award">--}}
+                                            {{--                                                    <circle cx="12" cy="8" r="7"></circle>--}}
+                                            {{--                                                    <polyline--}}
+                                            {{--                                                            points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>--}}
+                                            {{--                                                </svg>--}}
+                                            {{--                                                8 Certificate--}}
+                                            {{--                                            </li>--}}
                                         </ul>
 
                                     </div>
@@ -70,7 +70,7 @@
         <div class="dashboard">
             <div class="container-fluid full__width__padding">
                 <div class="row">
-                    
+
                     <div class="col-xl-3 col-lg-3 col-md-12">
                         <div class="dashboard__inner sticky-top">
                             <div class="dashboard__nav__title">
@@ -90,7 +90,7 @@
                                             Dashboard
                                         </a>
                                     </li>
-                                    
+
                                     <li>
                                         <a href="javascript:void(0);" id="profileTab">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -103,7 +103,7 @@
                                             My Profile
                                         </a>
                                     </li>
-                           
+
                                     <li>
                                         <a href="javascript:void(0);" id="courseTab">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -113,6 +113,17 @@
                                                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                                             </svg>
                                             Enrolled Courses</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="javascript:void(0);" id="wishTab">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                 stroke-linecap="round" stroke-linejoin="round"
+                                                 class="feather feather-bookmark">
+                                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                            </svg>
+                                            Wishlist</a>
                                     </li>
 
                                     <li>
@@ -127,8 +138,8 @@
                                             </svg>
                                             My Exam Attempts</a>
                                     </li>
-                                    
-                                    
+
+
                                     <li>
                                         <a href="javascript:void(0);" id="SettingsTab">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -136,11 +147,12 @@
                                                  stroke-linecap="round" stroke-linejoin="round"
                                                  class="feather feather-settings">
                                                 <circle cx="12" cy="12" r="3"></circle>
-                                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                                                <path
+                                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                                             </svg>
                                             Settings</a>
                                     </li>
-                                    
+
                                     <li>
                                         <a id="logOut" href="javascript:void(0);">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -153,7 +165,7 @@
                                             Logout
                                         </a>
                                     </li>
-                                   
+
                                 </ul>
                             </div>
                             <form method="POST" action="{{ route('student.log-out') }}">
@@ -163,9 +175,9 @@
                         </div>
                     </div>
                     <div class="col-xl-9 col-lg-9 col-md-12" id="dashboardMainContent">
-                       
+
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -175,14 +187,14 @@
 
     @push('js')
         <script>
-            
+
             $(document).ready(function () {
-                
+
                 $('#dashSummeryTab').trigger('click');
             });
 
             //Logout Function
-            $('#logOut').on('click',function (e) {
+            $('#logOut').on('click', function (e) {
                 e.preventDefault();
                 console.log('logout');
 
@@ -213,28 +225,28 @@
                                 errorToast('error');
                             }
                         })
-                        
+
                     } else if (result.isCanceled) {
                         Swal.fire("Changes are not saved", "", "info");
                     }
                 });
-                
-         
+
+
             });
-            
+
             // dashboard Summery
             $(document).on('click', '#dashSummeryTab', function (e) {
 
                 e.preventDefault();
-                
-               
+
+
                 $(this).addClass('active'); // Add active class to the clicked element's anchor
-                
+
                 $('#profileTab').removeClass('active');
                 $('#courseTab').removeClass('active');
                 $('#examTab').removeClass('active');
                 $('#SettingsTab').removeClass('active');
-                
+
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -244,27 +256,27 @@
 
                     // contentType: false,
                     // processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         // Show loader
                         showLoader();
                     },
-                    
+
                     success: function (res) {
 
                         $('#dashboardMainContent').empty();
                         $('#dashboardMainContent').append(res.html);
-                        
+
                         $("html, body").animate({
                             scrollTop: $("#dashboardSummerSection").offset().top - 160
                         }, 200);
-                        
+
                     },
                     error: function (err) {
 
                         errorToast('error');
                     },
-                    
-                    complete: function() {
+
+                    complete: function () {
                         // Hide loader
                         hideLoader();
                     }
@@ -278,7 +290,7 @@
 
 
                 $(this).addClass('active'); // Add active class to the clicked element's anchor
-                
+
                 $('#dashSummeryTab').removeClass('active');
                 $('#courseTab').removeClass('active');
                 $('#examTab').removeClass('active');
@@ -292,7 +304,7 @@
 
                     // contentType: false,
                     // processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         // Show loader
                         showLoader();
                     },
@@ -301,8 +313,8 @@
 
                         $('#dashboardMainContent').empty();
                         $('#dashboardMainContent').append(res.html);
-                        
-                         $("html, body").animate({
+
+                        $("html, body").animate({
                             scrollTop: $("#profileSection").offset().top - 100
                         }, 200); // 800ms smooth scrolling
 
@@ -311,7 +323,7 @@
 
                         errorToast('error');
                     },
-                    complete: function() {
+                    complete: function () {
                         // Hide loader
                         hideLoader();
                     }
@@ -329,6 +341,7 @@
                 $('#profileTab').removeClass('active');
                 $('#examTab').removeClass('active');
                 $('#SettingsTab').removeClass('active');
+                $('#wishTab').removeClass('active');
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -338,7 +351,7 @@
 
                     // contentType: false,
                     // processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         // Show loader
                         showLoader();
                     },
@@ -347,8 +360,8 @@
 
                         $('#dashboardMainContent').empty();
                         $('#dashboardMainContent').append(res.html);
-                        
-                         $("html, body").animate({
+
+                        $("html, body").animate({
                             scrollTop: $("#enrolledCourseSection").offset().top - 100
                         }, 200); // 800ms smooth scrolling
 
@@ -357,7 +370,54 @@
 
                         errorToast('error');
                     },
-                    complete: function() {
+                    complete: function () {
+                        // Hide loader
+                        hideLoader();
+                    }
+                })
+            });
+
+            //Wish Courses
+            $(document).on('click', '#wishTab', function (e) {
+
+                e.preventDefault();
+
+
+                $(this).addClass('active'); // Add active class to the clicked element's anchor
+                $('#dashSummeryTab').removeClass('active');
+                $('#profileTab').removeClass('active');
+                $('#examTab').removeClass('active');
+                $('#SettingsTab').removeClass('active');
+                $('#courseTab').removeClass('active');
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    method: 'GET',
+                    url: "{{route('student.dashboard.wish-courses')}}",
+
+                    // contentType: false,
+                    // processData: false,
+                    beforeSend: function () {
+                        // Show loader
+                        showLoader();
+                    },
+
+                    success: function (res) {
+
+                        $('#dashboardMainContent').empty();
+                        $('#dashboardMainContent').append(res.html);
+
+                        $("html, body").animate({
+                            scrollTop: $("#enrolledCourseSection").offset().top - 100
+                        }, 200); // 800ms smooth scrolling
+
+                    },
+                    error: function (err) {
+
+                        errorToast('error');
+                    },
+                    complete: function () {
                         // Hide loader
                         hideLoader();
                     }
@@ -376,7 +436,7 @@
                 $('#profileTab').removeClass('active');
                 $('#courseTab').removeClass('active');
                 $('#SettingsTab').removeClass('active');
-                
+
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -386,7 +446,7 @@
 
                     // contentType: false,
                     // processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         // Show loader
                         // showLoader();
                     },
@@ -395,8 +455,8 @@
 
                         $('#dashboardMainContent').empty();
                         $('#dashboardMainContent').append(res.html);
-                        
-                           $("html, body").animate({
+
+                        $("html, body").animate({
                             scrollTop: $("#attemptSection").offset().top - 100
                         }, 200); // 800ms smooth scrolling
 
@@ -405,7 +465,7 @@
 
                         errorToast('error');
                     },
-                    complete: function() {
+                    complete: function () {
                         // Hide loader
                         // hideLoader();
                     }
@@ -433,7 +493,7 @@
 
                     // contentType: false,
                     // processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         // Show loader
                         showLoader();
                     },
@@ -442,10 +502,9 @@
 
                         $('#dashboardMainContent').empty();
                         $('#dashboardMainContent').append(res.html);
-                        
-                        
-                        
-                            $("html, body").animate({
+
+
+                        $("html, body").animate({
                             scrollTop: $("#settingSection").offset().top - 100
                         }, 200); // 800ms smooth scrolling
 
@@ -454,20 +513,20 @@
 
                         errorToast('error');
                     },
-                    complete: function() {
+                    complete: function () {
                         // Hide loader
                         hideLoader();
                     }
                 })
             });
-            
+
             //Exam Solution
             $(document).on('click', '.examSolutionBtn', function (e) {
 
-                let id= $(this).data('id');
+                let id = $(this).data('id');
                 console.log(id)
                 e.preventDefault();
-                
+
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -477,7 +536,7 @@
 
                     // contentType: false,
                     // processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         // Show loader
                         showLoader();
                     },
@@ -492,21 +551,21 @@
 
                         errorToast('error');
                     },
-                    complete: function() {
+                    complete: function () {
                         // Hide loader
                         hideLoader();
                     }
                 })
             });
-            
-            
-            //Exam Leaderboard 
+
+
+            //Exam Leaderboard
             $(document).on('click', '.examLeaderboardBtn', function (e) {
 
-                let id= $(this).data('id');
+                let id = $(this).data('id');
                 console.log(id)
                 e.preventDefault();
-                
+
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -516,7 +575,7 @@
 
                     // contentType: false,
                     // processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         // Show loader
                         showLoader();
                     },
@@ -531,22 +590,60 @@
 
                         errorToast('error');
                     },
-                    complete: function() {
+                    complete: function () {
                         // Hide loader
                         hideLoader();
                     }
                 })
             });
-            
+
             //Close Button
             $(document).on('click', '.examCloseBtn', function (e) {
-                
+
                 e.preventDefault();
-                
+
                 $('#examTab').trigger('click');
             });
-            
+
+            //add to wish
+            $(document).on('click', '.wishlist', function (e) {
+                e.preventDefault();
+                var course_id = $(this).data('course-id');
+                let $this = $(this);
+
+                $.ajax({
+                    url: "{{ route('add-to-wish') }}",  // your route name
+                    type: "POST",
+                    data: {
+                        course_id: course_id,
+                        _token: "{{ csrf_token() }}"   // important for Laravel POST
+                    },
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            if (response.action === 'add') {
+                                // Switch to active heart
+                                $this.find('i').addClass('wish-active');
+                            } else if (response.action === 'remove') {
+                                // Switch back to inactive heart
+                                $this.find('i').removeClass('wish-active');
+
+                            }
+                            toastr.success(response.message);
+
+                            $('#wishTab').trigger('click');
+
+                        }
+                        if (response.status === 'error') {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function (xhr) {
+                        toastr.error('Please login to add to wishlist');
+                    }
+                });
+            })
         </script>
+
     @endpush
 
 @endsection
