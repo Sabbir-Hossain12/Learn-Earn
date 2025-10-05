@@ -28,7 +28,7 @@ class AdminController extends Controller
         $admins = User::role('admin')->get();
 
 //        dd($admins);
-        
+
       return   DataTables::of($admins)
             ->addColumn('status', function ($admin) {
 
@@ -39,12 +39,12 @@ class AdminController extends Controller
                                                         class="fa-solid fa-toggle-on fa-2x"></i>
                                             </a>';
                     } else {
-                        
+
                         return '<a class="status" id="adminStatus" href="javascript:void(0)"
                                                data-id="'.$admin->id.'" data-status="'.$admin->status.'"> <i
                                                         class="fa-solid fa-toggle-off fa-2x" style="color: grey"></i>
                                             </a>';
-                        
+
                     }
 //                }
 
@@ -64,7 +64,7 @@ class AdminController extends Controller
                                   data-id="'.$admin->id.'" data-bs-toggle="modal" data-bs-target="#editAdminModal">
                                    <i class="fas fa-edit"></i></a>';
               $deleteAction = '<a class="btn btn-sm btn-danger" href="javascript:void(0)"
-                                   data-id="'.$admin->id.'" id="deleteAdminBtn""> 
+                                   data-id="'.$admin->id.'" id="deleteAdminBtn"">
                                    <i class="fas fa-trash"></i></a>';
 
 //              if(Auth::guard('admin')->user()->can('Edit Admin')) {
@@ -78,7 +78,7 @@ class AdminController extends Controller
 //              if(Auth::guard('admin')->user()->can('Delete Admin')) {
 //
 //                  $deleteAction= '<a class="btn btn-sm btn-danger" href="javascript:void(0)"
-//                                    data-id="'.$admin->id.'" id="deleteAdminBtn""> 
+//                                    data-id="'.$admin->id.'" id="deleteAdminBtn"">
 //                                    <i class="fas fa-trash"></i></a>';
 //
 //              }
@@ -89,7 +89,7 @@ class AdminController extends Controller
           })
           ->rawColumns(['action', 'status', 'role'])
           ->make(true);
-      
+
     }
 
     /**
@@ -112,26 +112,27 @@ class AdminController extends Controller
         $admin->email = $request->email;
         $admin->phone = $request->phone;
         $admin->password = $request->password;
+        $admin->ref_code =  rand(10000000, 99999999);
 
         $admin->syncRoles($request->role);
-        
+
         if ($request->hasFile('profile_image')) {
-            
+
             $file = $request->file('profile_image');
             $filename = time().uniqid().$file->getClientOriginalName();
             $file->move(public_path('backend/upload/admin/'), $filename);
             $admin->profile_image ='backend/upload/admin/'. $filename;
-            
+
         }
 
        $save= $admin->save();
-        
+
         if ($save) {
             return response()->json(['status' => 'success', 'message' => 'Admin created successfully'], 201);
         }
-        
+
         return response()->json(['status' => 'failed', 'message' => 'Something went wrong'], 500);
-        
+
     }
 
     /**
@@ -149,8 +150,8 @@ class AdminController extends Controller
     {
         $roles = Role::get();
         $admin = User::with('roles')->findOrFail($id);
-        
-        
+
+
         if ($admin) {
             return response()->json(['status' => 'success','message' => 'Admin fetched successfully', 'data' => $admin, 'roles' => $roles], 200);
         }
@@ -172,7 +173,7 @@ class AdminController extends Controller
             $admin->phone = $request->phone;
 
             $admin->syncRoles($request->role);
-            
+
             if ($request->hasFile('profile_image')) {
                 if ($admin->profile_image && file_exists(public_path($admin->profile_image))) {
                     unlink(public_path($admin->profile_image));
@@ -182,14 +183,14 @@ class AdminController extends Controller
                 $file->move(public_path('backend/upload/admin/'), $filename);
                 $admin->profile_image ='backend/upload/admin/'. $filename;
             }
-            
+
            $save= $admin->save();
 
             if ($save) {
                 return response()->json(['status' => 'success','message' => 'Admin fetched successfully'], 200);
             }
             }
-        
+
 
             return response()->json(['status' => 'failed','message' => 'Something went wrong'], 500);
     }
@@ -213,7 +214,7 @@ class AdminController extends Controller
     {
         $id = $request->id;
         $status = $request->status;
-        
+
         if ($status == 1) {
             $stat = 0;
         } else {

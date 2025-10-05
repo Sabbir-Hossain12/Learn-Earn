@@ -96,7 +96,6 @@ Route::post('/apply-coupon', [OrderController::class, 'applyCoupon'])->name('app
 
 //pages
 Route::prefix('pages')->group(function () {
-
     Route::get('/{slug}', [HomeController::class,'page'])->name('page');
 });
 

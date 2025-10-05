@@ -19,74 +19,79 @@ class OrderController extends Controller
 {
     public function checkoutPage(string $slug)
     {
-        
+
         $course = Course::where('slug', $slug)->first();
         return view('Frontend.pages.checkout.checkout-page', compact('course'));
-        
+
     }
 
 
     public function orderSubmit(Request $request)
     {
-        
-        
         // dd($request->all());
-
 
         DB::beginTransaction();
         try {
-            
+
             $course= Course::find($request->course_id);
-            
-            
+
+
               if(session()->has('coupon')) {
-             
+
                 $coupon = session('coupon');
-                
+
                 if($coupon['type'] == 'Percentage')
                 {
                   $course_price =  $course->sale_price - ($course->sale_price * $coupon['discount'])/100;
                 }
-                
+
                 else
                 {
                     $course_price =  $course->sale_price - $coupon['discount'] ;
                 }
             }
-            
+
+            //check affiliate code
+            if (session()->has('ref_code')) {
+                $ref_code = session()->get('ref_code');
+                $user = User::where('ref_code', $ref_code)->first();
+                $affiliate_id = $user->id;
+            }
+
             $student_id=auth()->user()->id;
-            
+
             $invoiceNumber=uniqid();
-            
+
             $student= User::find($student_id);
             $student->name=$request->name;
             $student->email=$request->email;
             $student->address=$request->address;
             $student->save();
-            
-           
+
+
             $order= new Order();
             $order->user_id = auth()->user()->id;
             $order->total_amount = $course_price ?? $course->sale_price;
             $order->transaction_id = $invoiceNumber;
             $order->payment_method	 = $request->payment_method;
-            
+            $order->affiliate_id = $affiliate_id;
+
             if($request->payment_method == 'free')
             {
                 $order->status = 'success';
             }
-            
+
             $order->save();
-            
+
             $orderCourse= new OrderCourse();
             $orderCourse->order_id = $order->id;
             $orderCourse->course_id = $request->course_id;
             $orderCourse->price = $course_price ?? $course->sale_price;
             $orderCourse->discount = $course->discount ?? $coupon['discount'];
             $orderCourse->save();
-            
+
             DB::commit();
-            
+
             if($course->sale_price == 0)
             {
                     $enrollment= new Enrollment();
@@ -94,10 +99,10 @@ class OrderController extends Controller
                     $enrollment->course_id = $course->id;
                     $enrollment->order_id = $order->id;
                     $enrollment->save();
-              
+
                 return redirect()->route('student.dashboard.index')->with('success', 'Course Enrolled Successfully');
             }
-            
+
             $request['intent'] = 'sale';
             $request['mode'] = '0011'; //0011 for checkout
             $request['payerReference'] = $invoiceNumber;
@@ -105,11 +110,11 @@ class OrderController extends Controller
             $request['amount'] = $course_price ?? $course->sale_price;
             $request['merchantInvoiceNumber'] = $invoiceNumber;
             $request['callbackURL'] = config("bkash.callbackURL");
-            
-            
+
+
 
             Session::put('course_id', $request->course_id);
-            
+
             $request_data_json = json_encode($request->all());
 
             $response =  BkashPaymentTokenize::cPayment($request_data_json);
@@ -120,24 +125,24 @@ class OrderController extends Controller
             {
                 return redirect()->away($response['bkashURL']);
             }
-            
+
             else
             {
                 return redirect()->back()->with('error-alert2', $response['statusMessage']);
             }
-            
-            
+
+
         }
-        
+
         catch (Exception $e) {
-            
+
             DB::rollBack();
             dd($e->getMessage());
-            
+
         }
     }
-    
-    
+
+
     public function applyCoupon(Request $request)
     {
         $coupon = Coupon::where('code', $request->code)->first();
@@ -157,7 +162,7 @@ class OrderController extends Controller
         'message' => 'Invalid coupon code.'
     ]);
     }
-    
+
     Session::put('coupon', [
         'code' => $coupon->code,
         'type' => $coupon->discount_type,
@@ -170,5 +175,5 @@ class OrderController extends Controller
         'type' => $coupon->discount_type
     ]);
     }
-    
+
 }

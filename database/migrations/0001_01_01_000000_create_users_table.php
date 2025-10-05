@@ -17,16 +17,22 @@ return new class extends Migration
             $table->string('email')->unique()->nullable();
             $table->string('phone')->unique()->nullable();
             $table->text('profile_image')->nullable();
-            
+
             $table->string('instructor_title')->nullable();
             $table->text('short_desc')->nullable();
             $table->text('long_desc')->nullable();
             $table->text('instructor_img')->nullable();
-            
+
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->rememberToken();
-            
+
+            $table->decimal('account_balance', 10, 2)->default(0);
+            $table->decimal('withdrawal_balance', 10, 2)->default(0);
+            $table->decimal('purchase_balance', 10, 2)->default(0);
+            $table->integer('ref_code')->nullable()->unique();
+            $table->boolean('status')->default(0);
+
             $table->tinyInteger('status')->default(1)->comment('1=active,0=inactive');
             $table->timestamps();
         });

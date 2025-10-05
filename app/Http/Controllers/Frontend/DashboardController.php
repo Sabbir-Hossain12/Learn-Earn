@@ -7,6 +7,7 @@ use App\Models\Assessment;
 use App\Models\AssessmentGrade;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Order;
 use App\Models\Question;
 use App\Models\User;
 use App\Models\QuizAttemptAnswer;
@@ -34,6 +35,11 @@ class DashboardController extends Controller
         $enrollments_count = Enrollment::where('user_id', $student_id)->with(['student', 'course'])->count();
         $exam_count = AssessmentGrade::where('student_id', $student_id)->count();
         $course_count = Course::where('status', 1)->count();
+
+        $pendingOrders = Order::where('affiliate_id',$student_id)->where('status','pending')->count();
+        $successOrders = Order::where('affiliate_id',$student_id)->where('status','success')->count();
+
+        $totalSales =
 
         $dashSummeryPage = view('Frontend.pages.dashboard.include.summery',
             compact(['enrollments_count', 'exam_count', 'course_count']))->render();

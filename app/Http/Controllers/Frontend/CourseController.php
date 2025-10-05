@@ -96,8 +96,15 @@ class CourseController extends Controller
     }
 
 
-    public function courseList()
+    public function courseList(Request $request)
     {
+        $affiliateCode = $request->query('ref');
+
+        if ($affiliateCode) {
+            // Save in session
+            session(['ref_code' => $affiliateCode]);
+        }
+
         $courses = Course::where('status', 1)->get();
 
         return view('Frontend.pages.course.course-list', compact('courses'));

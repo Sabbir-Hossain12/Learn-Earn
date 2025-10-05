@@ -61,7 +61,7 @@ class TeacherController extends Controller
                                   data-id="'.$admin->id.'" data-bs-toggle="modal" data-bs-target="#editAdminModal">
                                    <i class="fas fa-edit"></i></a>';
                 $deleteAction = '<a class="btn btn-sm btn-danger" href="javascript:void(0)"
-                                   data-id="'.$admin->id.'" id="deleteAdminBtn""> 
+                                   data-id="'.$admin->id.'" id="deleteAdminBtn"">
                                    <i class="fas fa-trash"></i></a>';
 
 //              if(Auth::guard('admin')->user()->can('Edit Admin')) {
@@ -75,7 +75,7 @@ class TeacherController extends Controller
 //              if(Auth::guard('admin')->user()->can('Delete Admin')) {
 //
 //                  $deleteAction= '<a class="btn btn-sm btn-danger" href="javascript:void(0)"
-//                                    data-id="'.$admin->id.'" id="deleteAdminBtn""> 
+//                                    data-id="'.$admin->id.'" id="deleteAdminBtn"">
 //                                    <i class="fas fa-trash"></i></a>';
 //
 //              }
@@ -107,6 +107,7 @@ class TeacherController extends Controller
         $admin->phone = $request->phone;
         $admin->instructor_title = $request->instructor_title;
         $admin->short_desc = $request->short_desc;
+        $admin->ref_code =  rand(10000000, 99999999);
         $admin->password = Hash::make($request->password);
         $admin->syncRoles($request->role);
 
@@ -198,7 +199,7 @@ class TeacherController extends Controller
     {
         $admin = User::findOrFail($id);
 
-       
+
         if ($admin) {
             $course = Course::where('teacher_id', $id)->delete();
             $admin->delete();

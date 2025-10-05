@@ -184,8 +184,8 @@ class StudentAuthController extends Controller
             $user->slug = Str::slug($request->name).uniqid();
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
-            $user->phone_verified=1;
-            $user->phone_verified_at=now();
+            $user->phone_verified= 1;
+            $user->phone_verified_at= now();
             $save= $user->save();
         }
         else
@@ -198,6 +198,7 @@ class StudentAuthController extends Controller
             $user->password = Hash::make($request->password);
             $user->phone_verified=1;
             $user->phone_verified_at=now();
+            $user->ref_code = rand(10000000, 99999999);
 
             $user->assignRole('student');
             $save= $user->save();
