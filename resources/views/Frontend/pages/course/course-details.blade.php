@@ -1,6 +1,6 @@
 @extends('Frontend.layouts.master')
 
-@section('content')
+@push('css')
     <style>
         @media only screen and (min-width: 767px) {
             .purchase-sec {
@@ -36,7 +36,11 @@
         .rating label:hover ~ label i {
             color: gold; /* hover effect */
         }
+
     </style>
+@endpush
+
+@section('content')
 
     <div class="blogarea__2 sp_top_100 sp_bottom_100">
         <div class="container">
@@ -354,40 +358,39 @@
                                 <div class="tab-pane fade" id="projects__three" role="tabpanel"
                                      aria-labelledby="projects__three">
 
+                                    <section class="p-4 p-md-5 text-center text-lg-start shadow-1-strong rounded">
+                                        <div class="row d-flex justify-content-center">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-body m-3">
+                                                        @forelse($reviews as $review)
+                                                            <div class="row mb-5">
+                                                                <div
+                                                                    class="col-lg-4 d-flex justify-content-center align-items-center mb-4 mb-lg-0">
+                                                                    <img
+                                                                        src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
+                                                                        class="rounded-circle img-fluid shadow-1"
+                                                                        alt="woman avatar" width="150" height="150"/>
+                                                                </div>
+                                                                <div class="col-lg-8">
+                                                                    <p class="text-muted fw-light mb-4">
+                                                                        {{ $review->comment ?? ''}}
+                                                                    </p>
+                                                                    <p class="fw-bold lead mb-2 text-muted"><strong>{{ $review->user->name ?? '' }}</strong>
+                                                                    </p>
+                                                                    <p class="fw-bold text-muted mb-0">{{ $review->created_at->diffForHumans() }}</p>
+                                                                </div>
+                                                            </div>
 
-                                    <div class="property__facts__feature property__facts__feature__2 ">
-                                        <h4>Customer Reviews</h4>
-                                        <ul class="property__comment">
-                                            @forelse($reviews as $review)
-                                                <li class="property__comment__list">
-                                                    <div class="property__comment__img">
-                                                        <img loading="lazy" src="img/teacher/teacher__2.png" alt="Image">
+                                                        @empty
+                                                            <p>No Review Yet</p>
+                                                        @endforelse
                                                     </div>
-                                                    <div class="property__comment__comment">
-                                                        <h6><a href="#">{{ $review->user->name }}</a></h6>
-                                                        <div class="property__sidebar__icon">
-                                                            <ul>
-                                                                <li><i class="icofont-star"></i></li>
-                                                                <li><i class="icofont-star"></i></li>
-                                                                <li><i class="icofont-star"></i></li>
-                                                                <li><i class="icofont-star"></i></li>
-                                                                <li><i class="icofont-star"></i></li>
-                                                            </ul>
-                                                        </div>
-                                                        <p>{{ $review->comment }}</p>
-                                                        <span class="property__comment__reply__btn">{{ $review->created_at->format('F d, Y') }}</span>
-                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
 
-                                                </li>
-                                            @empty
-                                                <li class="property__comment__list">
-                                                    <p>No reviews found</p>
-                                                </li>
-                                            @endforelse
-
-                                        </ul>
-
-                                    </div>
 
                                     @if(auth()->check() && auth()->user()->hasRole('student'))
                                         <form action="{{ route('review.submit') }}" method="post"
