@@ -61,6 +61,8 @@ Route::get('/course-by-class/{slug}', [CourseController::class,'coursesByClass']
 
 Route::post('/wishlist', [HomeController::class,'addToWish'])->name('add-to-wish');
 
+//Add to Aff Shop
+Route::post('/add-to-shop',[CourseController::class,'addToShop'])->name('add-to-shop');
 
 //Reviews
 Route::post('/review-submit', [CourseController::class,'reviewSubmit'])->name('review.submit');
@@ -141,6 +143,7 @@ Route::prefix('student/dashboard')->middleware('student')->name('student.dashboa
     Route::post('/update-password', [DashboardController::class,'updatePassword'])->name('profile.password');
     Route::post('/update-social-links', [DashboardController::class,'updateSocial'])->name('profile.social');
 
+    Route::get('/my-shop',[DashboardController::class,'myShop'])->name('my-shop');
 });
 
 

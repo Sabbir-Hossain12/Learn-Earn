@@ -376,7 +376,8 @@
                                                                     <p class="text-muted fw-light mb-4">
                                                                         {{ $review->comment ?? ''}}
                                                                     </p>
-                                                                    <p class="fw-bold lead mb-2 text-muted"><strong>{{ $review->user->name ?? '' }}</strong>
+                                                                    <p class="fw-bold lead mb-2 text-muted">
+                                                                        <strong>{{ $review->user->name ?? '' }}</strong>
                                                                     </p>
                                                                     <p class="fw-bold text-muted mb-0">{{ $review->created_at->diffForHumans() }}</p>
                                                                 </div>
@@ -646,6 +647,21 @@
                                     @endif
                                 @endif
 
+                                @if(auth()->check() && auth()->user()->hasRole('student'))
+                                    @if(App\Models\AffiliateCourse::where('course_id', $courseDetails->id)->where('affiliate_id', auth()->user()->id)->exists())
+                                        <a class="default__button default__button--2"
+                                           href="javascript:void(0)">Added</a>
+                                    @else
+                                        <form method="post" action="{{route('add-to-shop')}}">
+                                            @csrf
+                                            <input type="hidden" value="{{ $courseDetails->id }}" name="course_id"/>
+                                            <button class="default__button default__button--2" type="submit">Add
+                                                to Shop
+                                            </button>
+                                        </form>
+                                    @endif
+
+                                @endif
 
                                 <span>
                                         <i class="icofont-ui-rotation"></i>

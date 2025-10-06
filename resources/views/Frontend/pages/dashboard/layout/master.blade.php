@@ -176,6 +176,8 @@
                     </div>
                     <div class="col-xl-9 col-lg-9 col-md-12" id="dashboardMainContent">
 
+                        @yield('content')
+
                     </div>
 
                 </div>

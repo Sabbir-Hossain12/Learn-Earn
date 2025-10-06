@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\AffiliateCourse;
 use App\Models\Assessment;
 use App\Models\AssessmentAnswer;
 use App\Models\AssessmentGrade;
@@ -22,16 +23,22 @@ use Illuminate\Http\Request;
 class CourseController extends Controller
 {
 
-    public function courseDetails(string $slug)
+    public function courseDetails(string $slug, Request $request)
     {
+        $affiliateCode = $request->query('ref');
+
+        if ($affiliateCode) {
+            // Save in session
+            session(['ref_code' => $affiliateCode]);
+        }
+
         $courseDetails = Course::where('slug', $slug)->with('teacher', 'subjects', 'class', 'lessons',
             'lessons.lessonVideos', 'lessons.assessments')->first();
 
         $enrollment = Enrollment::where('user_id', auth()->user()->id ?? 0)->where('course_id',
             $courseDetails->id)->first();
 
-        $enrollmentCount = Enrollment::where('course_id',
-                                $courseDetails->id)->count();
+        $enrollmentCount = Enrollment::where('course_id', $courseDetails->id)->count();
 
         $relatedCourses = Course::where('teacher_id', $courseDetails->teacher_id)->limit(4)->get();
 
@@ -432,5 +439,18 @@ foreach ($allQuestionIds as $questionId) {
         $review->save();
 
         return redirect()->back()->with('success', 'Review Submitted successfully');
+    }
+
+    public function addToShop(Request $request)
+    {
+        $affiliate_id = auth()->user()->id;
+        $course_id = $request->course_id;
+
+        $shop = new AffiliateCourse();
+        $shop->affiliate_id = $affiliate_id;
+        $shop->course_id = $course_id;
+        $shop->save();
+
+        return redirect()->back()->with('success', 'Course added to shop successfully');
     }
 }

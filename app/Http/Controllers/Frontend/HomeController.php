@@ -20,6 +20,13 @@ class HomeController extends Controller
 {
     public function homePage(Request $request)
     {
+        // get the full query string (since your code is not using key=value)
+        $affiliateCode = $request->query('ref');
+
+        if ($affiliateCode) {
+            // Save in session
+            session(['ref_code' => $affiliateCode]);
+        }
 
         $heroBanner= Herobanner::first();
         $services = CourseClass::where('status',1)->where('is_featured',1)->orderBy('position','asc')->get();
@@ -33,13 +40,7 @@ class HomeController extends Controller
         $randomCourse= Course::where('status',1)->inRandomOrder()->limit(6)->get();
         $courseClasses= CourseClass::where('status',1)->where('is_featured',1)->orderBy('position','asc')->limit(4)->get();
 
-        // get the full query string (since your code is not using key=value)
-        $affiliateCode = $request->query('ref');
 
-        if ($affiliateCode) {
-            // Save in session
-            session(['ref_code' => $affiliateCode]);
-        }
 
         return view('Frontend.pages.home',compact(['heroBanner','randomCourse','courseClasses','teachers','about','services','testimonials','testimonialSetting','blogs','featuredCourses']));
     }

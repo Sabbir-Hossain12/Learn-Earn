@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\AffiliateCourse;
 use App\Models\Assessment;
 use App\Models\AssessmentGrade;
 use App\Models\Course;
@@ -39,11 +40,14 @@ class DashboardController extends Controller
         $pendingOrders = Order::where('affiliate_id',$student_id)->where('status','pending')->count();
         $successOrders = Order::where('affiliate_id',$student_id)->where('status','success')->count();
 
-        $totalSales =
+        $totalSales = Order::where('affiliate_id',$student_id)->sum('total_amount');
+
+        $account_balance = User::where('id',$student_id)->value('account_balance');
+        $withdrawal_balance = User::where('id',$student_id)->value('withdrawal_balance');
 
         $dashSummeryPage = view('Frontend.pages.dashboard.include.summery',
-            compact(['enrollments_count', 'exam_count', 'course_count']))->render();
-
+            compact(['enrollments_count', 'exam_count', 'course_count', 'pendingOrders',
+                'successOrders', 'totalSales', 'account_balance', 'withdrawal_balance']))->render();
 
         return response()->json(['html' => $dashSummeryPage]);
     }
@@ -246,5 +250,14 @@ class DashboardController extends Controller
 
         return response()->json(['html' => '<div class="alert alert-danger">Leaderboard Not Found</div>']);
 
+    }
+
+    public function myShop()
+    {
+        $affiliate_id = auth()->user()->id;
+
+        $affiliateCourses = AffiliateCourse::where('affiliate_id', $affiliate_id)->with('course')->get();
+
+        return view('Frontend.pages.dashboard.shop', compact('affiliateCourses'));
     }
 }

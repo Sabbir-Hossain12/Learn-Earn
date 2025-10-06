@@ -66,24 +66,23 @@
         <div class="row">
             {{-- Affiliate --}}
             {{-- My Shop --}}
-            <div class="col-xl-4 col-lg-6 col-md-12 col-12">
-                <div class="dashboard__single__counter">
-                    <div class="counterarea__text__wraper">
-                        <div class="counter__img">
-                            <img loading="lazy"
-                                 src="{{asset('frontend')}}/img/counter/counter__3.png"
-                                 alt="counter">
-                        </div>
-                        <div class="counter__content__wraper">
-                            <div class="counter__number">
-                                <span class="counter">{{$exam_count ?? 0}}</span>
+            <a href="{{ route('student.dashboard.my-shop') }}">
+                <div class="col-xl-4 col-lg-6 col-md-12 col-12">
+                    <div class="dashboard__single__counter">
+                        <div class="counterarea__text__wraper">
+                            <div class="counter__img">
+                                <img loading="lazy"
+                                     src="{{asset('frontend')}}/img/counter/counter__3.png"
+                                     alt="counter">
                             </div>
-                            <p>My Shop</p>
+                            <div class="counter__content__wraper">
+                                <p>My Shop</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        {{--Pending Orders--}}
+            </a>
+            {{--Pending Orders--}}
             <div class="col-xl-4 col-lg-6 col-md-12 col-12">
                 <div class="dashboard__single__counter">
                     <div class="counterarea__text__wraper">
@@ -94,7 +93,7 @@
                         </div>
                         <div class="counter__content__wraper">
                             <div class="counter__number">
-                                <span class="counter">{{$exam_count ?? 0}}</span>
+                                <span class="counter">{{ $pendingOrders ?? 0}}</span>
                             </div>
                             <p>Pending Orders</p>
                         </div>
@@ -113,7 +112,7 @@
                         </div>
                         <div class="counter__content__wraper">
                             <div class="counter__number">
-                                <span class="counter">{{$exam_count ?? 0}}</span>
+                                <span class="counter">{{ $successOrders ?? 0}}</span>
                             </div>
                             <p>Successful Orders</p>
                         </div>
@@ -132,7 +131,7 @@
                         </div>
                         <div class="counter__content__wraper">
                             <div class="counter__number">
-                                <span class="counter">{{$exam_count ?? 0}}</span>
+                                <span class="counter">{{ $totalSales ?? 0 }}</span>
                             </div>
                             <p>Total Sales</p>
                         </div>
@@ -151,7 +150,7 @@
                         </div>
                         <div class="counter__content__wraper">
                             <div class="counter__number">
-                                <span class="counter">{{$exam_count ?? 0}}</span>
+                                <span class="counter">{{ $account_balance ?? 0 }}</span>
                             </div>
                             <p>Account Balance</p>
                         </div>
@@ -170,7 +169,7 @@
                         </div>
                         <div class="counter__content__wraper">
                             <div class="counter__number">
-                                <span class="counter">{{$exam_count ?? 0}}</span>
+                                <span class="counter">{{ $withdrawal_balance ?? 0 }}</span>
                             </div>
                             <p>Withdraw Balance</p>
                         </div>
