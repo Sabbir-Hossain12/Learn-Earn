@@ -144,10 +144,13 @@ Route::prefix('student/dashboard')->middleware('student')->name('student.dashboa
     Route::post('/update-social-links', [DashboardController::class,'updateSocial'])->name('profile.social');
 
     Route::get('/my-shop',[DashboardController::class,'myShop'])->name('my-shop');
+    Route::get('/affiliate-withdrawal-history',[DashboardController::class, 'withdrawHistory'])->name('affiliate-withdrawal-history');
+    Route::get('/affiliate-withdrawal',[DashboardController::class, 'withdrawalRequestPage'])->name('affiliate-withdrawal-page');
+    Route::post('/withdrawal-request', [DashboardController::class, 'withdrawalRequest'])->name('withdrawal-request');
 });
 
 
-//Bkash
+    //Bkash
 
     // Payment Routes for bKash
     Route::get('/bkash/payment', [App\Http\Controllers\BkashTokenizePaymentController::class,'index'])->middleware(\App\Http\Middleware\StudentMiddleware::class);

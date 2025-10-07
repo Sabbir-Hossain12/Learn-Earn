@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\AffiliateCourse;
+use App\Models\AffiliateWithdraw;
 use App\Models\Assessment;
 use App\Models\AssessmentGrade;
 use App\Models\Course;
@@ -45,9 +46,12 @@ class DashboardController extends Controller
         $account_balance = User::where('id',$student_id)->value('account_balance');
         $withdrawal_balance = User::where('id',$student_id)->value('withdrawal_balance');
 
+        $shop_count = AffiliateCourse::where('affiliate_id',$student_id)->count();
+
         $dashSummeryPage = view('Frontend.pages.dashboard.include.summery',
             compact(['enrollments_count', 'exam_count', 'course_count', 'pendingOrders',
-                'successOrders', 'totalSales', 'account_balance', 'withdrawal_balance']))->render();
+                'successOrders', 'totalSales', 'account_balance', 'withdrawal_balance',
+                'shop_count']))->render();
 
         return response()->json(['html' => $dashSummeryPage]);
     }
@@ -259,5 +263,54 @@ class DashboardController extends Controller
         $affiliateCourses = AffiliateCourse::where('affiliate_id', $affiliate_id)->with('course')->get();
 
         return view('Frontend.pages.dashboard.shop', compact('affiliateCourses'));
+    }
+
+    //Affiliate Withdrawal
+    public function withdrawHistory()
+    {
+        $withdrawals = AffiliateWithdraw::where('affiliate_id', auth()->user()->id)->with('user')->get();
+
+        return view('Frontend.pages.dashboard.withdrawal.withdraw-history', compact('withdrawals'));
+    }
+
+    public function withdrawalRequestPage()
+    {
+        $affiliate = User::where('id', auth()->user()->id)->first();
+
+        return view('Frontend.pages.dashboard.withdrawal.withdrawal-request', compact('affiliate'));
+    }
+
+
+    public function withdrawalRequest(Request $request)
+    {
+
+        $request->validate([
+            'amount' => 'required|numeric',
+            'payment_method' => 'required|string',
+            'payment_details' => 'nullable|string',
+        ]);
+
+        $affiliate = User::where('id', auth()->user()->id)->first();
+
+
+        if ($request->amount > $request->account_balance) {
+
+            return redirect()->back()->with('error', 'You do not have enough balance to withdraw');
+        } else {
+            $withdraw = new AffiliateWithdraw();
+
+            $withdraw->affiliate_id = auth()->user()->id;
+            $withdraw->invoiceID = uniqid();
+            $withdraw->amount = $request->amount;
+            $withdraw->payment_method = $request->payment_method;
+            $withdraw->payment_details = $request->payment_details;
+            $withdraw->save();
+
+            $affiliate->account_balance = $request->account_balance - $request->amount;
+            $affiliate->withdrawal_balance = $request->withdrawal_balance + $request->amount;
+            $affiliate->save();
+
+            return redirect()->route('student.dashboard.affiliate-withdrawal-history', $withdraw->id)->with('success', 'Withdrawal Request Sent Successfully');
+        }
     }
 }

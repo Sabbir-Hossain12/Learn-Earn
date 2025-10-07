@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Enrollment;
 use App\Models\Order;
 use App\Models\Coupon;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Karim007\LaravelBkashTokenize\Facade\BkashPaymentTokenize;
@@ -102,6 +103,24 @@ class BkashTokenizePaymentController extends Controller
               $enrollment->course_id = $course_id;
               $enrollment->order_id = $order->id;
               $enrollment->save();
+
+                $affiliateId = $order->affiliate_id;
+
+                // Track order products with affiliate commission
+                $totalCommission = $order->orderCourse()->with('course')->get()->sum(function ($orderCourse) {
+                    $commissionPerUnit = $orderCourse->course->affiliate_commission ?? 0;
+                    return $commissionPerUnit * $orderCourse->quantity;
+
+                });
+
+                if ($totalCommission > 0) {
+                    // Update affiliate account balance
+                    $affiliate = User::find($affiliateId);
+
+                    if ($affiliate) {
+                        $affiliate->increment('account_balance', $totalCommission);
+                    }
+                }
 
 
                  session()->forget('coupon');

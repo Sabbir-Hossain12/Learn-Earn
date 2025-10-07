@@ -10,12 +10,12 @@
     <div class="row">
         <div class="col-12">
                 <!-- Nav tabs -->
-                
+
                 @include('backend.include.course-tab')
             </div>
 
         </div>
-    
+
 
     <form method="post" action="{{route('admin.course.update',$course->id)}}" enctype="multipart/form-data">
         @csrf
@@ -25,12 +25,10 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title text-center">Course Information</h4>
-
                     </div>
+
                     <div class="card-body p-4">
-
                         <div class="row">
-
                             <div class="col-lg-6">
                                 <div>
                                     <div class="mb-3">
@@ -44,7 +42,6 @@
                                         <select  class="form-select form-control" name="course_class_id" required>
                                             @foreach($classes as $class)
                                                 <option value="{{$class->id}}" @if($course->course_class_id == $class->id) selected @endif>{{$class->title}}</option>
-
                                             @endforeach
                                         </select>
                                     </div>
@@ -67,14 +64,13 @@
                                     <div class="mb-3">
                                         <label for="thumbnail_img" class="form-label">Thumbnail Image (342 X 214px) *</label>
                                         <input class="form-control" type="file" id="thumbnail_img" name="thumbnail_img">
-                                        
-                                        @if($course->thumbnail_img) 
+
+                                        @if($course->thumbnail_img)
                                         <div class="mt-1">
                                             <img src="{{asset($course->thumbnail_img)}}" class="img-thumbnail" width="100" height="100" alt="{{$course->title}}">
                                         </div>
                                         @endif
                                     </div>
-
 
                                     <div class="mb-3">
                                         <label for="pageStatus" class="form-label">Certificate Status</label>
@@ -87,11 +83,15 @@
                                     <div class="mb-3">
                                         <label for="pageStatus" class="form-label">Status</label>
                                         <select id="pageStatus" class="form-select form-control" name="status" required>
-                                            <option value="1" @if($course->status == 1) selected @endif>Active</option>
-                                            <option value="0" @if($course->status == 0) selected @endif>Inactive</option>
+                                            <option value="1" @if( $course->status == 1 ) selected @endif>Active</option>
+                                            <option value="0" @if( $course->status == 0 ) selected @endif>Inactive</option>
                                         </select>
                                     </div>
 
+                                    <div class="mb-3">
+                                        <label for="affiliate_commission" class="form-label">Affiliate Commission (TK)</label>
+                                        <input type="number" name="affiliate_commission" class="form-control" value="{{ $course->affiliate_commission ?? 0 }}" required>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -101,7 +101,7 @@
                                         <input class="form-control" type="text" placeholder="Course Duration"
                                                id="duration" name="duration" value="{{$course->duration ?? ''}}">
                                     </div>
-                                    
+
                                      <div class="mb-3">
                                         <label for="group_link" class="form-label">Group Link</label>
                                         <input class="form-control" type="text" placeholder="Group Link"

@@ -25,7 +25,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        
+
         $classes=CourseClass::where('status',1)->get();
         $teachers= User::role('teacher')->where('status',1)->get();
         return view('backend.pages.courses.create',compact('classes','teachers'));
@@ -34,7 +34,7 @@ class CourseController extends Controller
     public function getData()
     {
         $courses = Course::get();
-        
+
 
         return  DataTables::of($courses)
             ->addColumn('status', function ($course) {
@@ -78,22 +78,22 @@ class CourseController extends Controller
             })
 
             ->addColumn('action', function ($course) {
-                
+
                 $deleteAction = '';
 
                 $editAction = '<a class="editButton btn btn-sm btn-primary" href="'.route('admin.course.edit', $course->id).'">
                                    <i class="fas fa-edit"></i></a>';
-                                   
+
                 if(auth()->check() && auth()->user()->hasRole('admin')) {
-                    
-                    $deleteAction = '<a class="btn btn-sm btn-danger" id="deleteAdminBtn" data-id="'.$course->id.'" href="javascript:void(0)"> 
+
+                    $deleteAction = '<a class="btn btn-sm btn-danger" id="deleteAdminBtn" data-id="'.$course->id.'" href="javascript:void(0)">
                                    <i class="fas fa-trash"></i></a>';
                 }
-                
-            
+
+
 
                 return '<div class="d-flex gap-3"> '.$editAction.$deleteAction.'</div>';
-                
+
 
 
             })
@@ -124,10 +124,10 @@ class CourseController extends Controller
 //            'is_exam' => 'integer',
 //            'is_certificate' => 'integer',
 //            'status' => 'integer',
-//            
+//
 //        ]);
-        
-        
+
+
         $course = new Course();
         $course->course_class_id = $request->course_class_id;
         $course->teacher_id = $request->teacher_id;
@@ -143,39 +143,40 @@ class CourseController extends Controller
         $course->is_exam = $request->is_exam;
         $course->is_certificate = $request->is_certificate;
         $course->status = $request->status;
-        
+
         $course->group_link = $request->group_link;
-        
-        
+        $course->affiliate_commission = $request->affiliate_commission;
+
+
         $course->meta_title = $request->meta_title;
         $course->meta_desc = $request->meta_desc;
         $course->meta_keywords = $request->meta_keywords;
-        
+
         if ($request->hasFile('meta_img')) {
             $file = $request->file('meta_img');
             $filename = time().uniqid().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('backend/upload/courses/'), $filename);
             $course->meta_img ='backend/uploads/courses/'. $filename;
         }
-        
-        
-        
+
+
+
         if ($request->hasFile('details_img')) {
             $file = $request->file('details_img');
             $filename = time().uniqid().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('backend/upload/courses/'), $filename);
             $course->details_img ='backend/upload/courses/'. $filename;
         }
-        
+
         if ($request->hasFile('thumbnail_img')) {
             $file = $request->file('thumbnail_img');
             $filename = time().uniqid().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('backend/upload/courses/'), $filename);
             $course->thumbnail_img ='backend/upload/courses/'. $filename;
         }
-        
-        
-        
+
+
+
         $save=  $course->save();
 
 
@@ -205,7 +206,7 @@ class CourseController extends Controller
 
         return view('backend.pages.courses.edit', compact('course','classes','teachers'));
     }
-    
+
     /**
      * Update the specified resource in storage.
      */
@@ -246,13 +247,14 @@ class CourseController extends Controller
         $course->is_exam = $request->is_exam;
         $course->is_certificate = $request->is_certificate;
         $course->status = $request->status;
-        
+
          $course->group_link = $request->group_link;
 
         $course->meta_title = $request->meta_title;
         $course->meta_desc = $request->meta_desc;
         $course->meta_keywords = $request->meta_keywords;
-        
+        $course->affiliate_commission = $request->affiliate_commission;
+
         if ($request->hasFile('details_img')) {
             if ($course->details_img && file_exists(public_path($course->details_img))) {
                 unlink(public_path($course->details_img));
@@ -262,7 +264,7 @@ class CourseController extends Controller
             $file->move(public_path('backend/upload/courses/'), $filename);
             $course->details_img ='backend/upload/courses/'. $filename;
         }
-        
+
         if ($request->hasFile('thumbnail_img')) {
             if ($course->thumbnail_img && file_exists(public_path($course->thumbnail_img))) {
                 unlink(public_path($course->thumbnail_img));
@@ -272,9 +274,6 @@ class CourseController extends Controller
             $file->move(public_path('backend/upload/courses/'), $filename);
             $course->thumbnail_img ='backend/upload/courses/'. $filename;
         }
-
-        
- 
 
         $save=  $course->save();
 
@@ -300,7 +299,7 @@ class CourseController extends Controller
         }
         return response()->json(['status' => 'failed','message' => 'Something went wrong'], 500);
     }
-    
+
     public function changeCourseStatus(Request $request)
     {
         $id = $request->id;

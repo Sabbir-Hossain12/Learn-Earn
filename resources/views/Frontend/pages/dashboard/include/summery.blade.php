@@ -75,7 +75,12 @@
                                      src="{{asset('frontend')}}/img/counter/counter__3.png"
                                      alt="counter">
                             </div>
+
+
                             <div class="counter__content__wraper">
+                                <div class="counter__number">
+                                    <span class="counter">{{ $shop_count ?? 0}}</span>
+                                </div>
                                 <p>My Shop</p>
                             </div>
                         </div>
@@ -159,23 +164,25 @@
             </div>
 
             {{-- Withdraw Balance --}}
-            <div class="col-xl-4 col-lg-6 col-md-12 col-12">
-                <div class="dashboard__single__counter">
-                    <div class="counterarea__text__wraper">
-                        <div class="counter__img">
-                            <img loading="lazy"
-                                 src="{{asset('frontend')}}/img/counter/counter__3.png"
-                                 alt="counter">
-                        </div>
-                        <div class="counter__content__wraper">
-                            <div class="counter__number">
-                                <span class="counter">{{ $withdrawal_balance ?? 0 }}</span>
+            <a href="{{ route('student.dashboard.affiliate-withdrawal-history') }}">
+                <div class="col-xl-4 col-lg-6 col-md-12 col-12">
+                    <div class="dashboard__single__counter">
+                        <div class="counterarea__text__wraper">
+                            <div class="counter__img">
+                                <img loading="lazy"
+                                     src="{{asset('frontend')}}/img/counter/counter__3.png"
+                                     alt="counter">
                             </div>
-                            <p>Withdraw Balance</p>
+                            <div class="counter__content__wraper">
+                                <div class="counter__number">
+                                    <span class="counter">{{ $withdrawal_balance ?? 0 }}</span>
+                                </div>
+                                <p>Withdraw Balance</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </div>

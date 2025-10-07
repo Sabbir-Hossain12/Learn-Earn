@@ -12,15 +12,15 @@
 <div class="vertical-menu">
 
     <div data-simplebar class="h-100">
-        
-     
+
+
 
         <!--- Sidemenu -->
         <div id="sidebar-menu">
             <!-- Left Menu Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
                     <li></li>
-                <li class=""> 
+                <li class="">
                     <a href="{{route('admin.dashboard.index')}}">
                         <i class="fa-solid fa-home"></i>
                         <span data-key="t-dashboard">Dashboard</span>
@@ -38,7 +38,7 @@
                                 <span data-key="t-calendar">Admin List</span>
                             </a>
                         </li>
-                        
+
 {{--                        <li>--}}
 {{--                            <a href="{{route('admin.admin.create')}}">--}}
 {{--                                <span data-key="t-calendar">Admin Create</span>--}}
@@ -57,10 +57,10 @@
                                 <span data-key="t-calendar">Teacher List</span>
                             </a>
                         </li>
-                        
+
                     </ul>
                 </li>
-                
+
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fa-solid fa-user-alt-slash"></i>
@@ -72,29 +72,29 @@
                                 <span data-key="t-calendar">Student List</span>
                             </a>
                         </li>
-                        
-                    </ul>
-                </li>
-                
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i class="fa-solid fa-user-tie"></i>
-                        <span data-key="t-apps">Role and Permission</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li>
-                            <a href="{{ route('admin.role.index') }}">
-                                <span data-key="t-calendar">Roles List</span>
-                            </a>
-                        </li>
 
-                        <li>
-                            <a href="{{route('admin.permission.index')}}">
-                                <span data-key="t-calendar">Permission List</span>
-                            </a>
-                        </li>
                     </ul>
                 </li>
+
+{{--                <li>--}}
+{{--                    <a href="javascript: void(0);" class="has-arrow">--}}
+{{--                        <i class="fa-solid fa-user-tie"></i>--}}
+{{--                        <span data-key="t-apps">Role and Permission</span>--}}
+{{--                    </a>--}}
+{{--                    <ul class="sub-menu" aria-expanded="false">--}}
+{{--                        <li>--}}
+{{--                            <a href="{{ route('admin.role.index') }}">--}}
+{{--                                <span data-key="t-calendar">Roles List</span>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+
+{{--                        <li>--}}
+{{--                            <a href="{{route('admin.permission.index')}}">--}}
+{{--                                <span data-key="t-calendar">Permission List</span>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                    </ul>--}}
+{{--                </li>--}}
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
@@ -107,14 +107,14 @@
                                 <span data-key="t-calendar">Class Management</span>
                             </a>
                         </li>
-                        
+
                         <li>
                             <a href="{{route('admin.course.index')}}">
                                 <span data-key="t-calendar">Course Management</span>
                             </a>
                         </li>
-                        
-                        
+
+
                     </ul>
                 </li>
 
@@ -124,25 +124,25 @@
                         <i class="fa-solid fa-truck"></i>
                         <span data-key="t-apps">Orders</span>
                     </a>
-                    
+
                     <ul class="sub-menu" aria-expanded="false">
                         <li>
                             <a href="{{ route('admin.order.index') }}">
                                 <span data-key="t-calendar">Order Management</span>
                             </a>
                         </li>
-                        
+
                     </ul>
                 </li>
                 @endif
-                
+
                   @if(Auth::user() && Auth::user()->hasRole('admin'))
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fa-solid fa-cart-shopping"></i>
                         <span data-key="t-apps">Coupons</span>
                     </a>
-                    
+
                     <ul class="sub-menu" aria-expanded="false">
                         <li>
                             <a href="{{ route('admin.coupon.index') }}">
@@ -152,17 +152,17 @@
                     </ul>
                 </li>
                 @endif
-                
-                
+
+
                @if(Auth::user() && Auth::user()->hasRole('admin'))
-                
+
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fa-solid fa-toolbox"></i>
                         <span data-key="t-apps">Website</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        
+
                         <li>
                             <a href="{{ route('admin.herobanner.index') }}">
                                 <span data-key="t-calendar">Hero Banner</span>
@@ -174,7 +174,7 @@
                                 <span data-key="t-calendar">About</span>
                             </a>
                         </li>
-                        
+
 
                         <li>
                             <a href="{{route('admin.testimonial.index')}}">
@@ -187,7 +187,7 @@
                                 <span data-key="t-calendar">Testimonial Settings</span>
                             </a>
                         </li>
-                    
+
 
                         <li>
                             <a href="{{route('admin.blog.index')}}">
@@ -200,7 +200,7 @@
                                 <span data-key="t-calendar">Pages</span>
                             </a>
                         </li>
-                        
+
 
                         <li>
                             <a href="{{route('admin.basicinfo.index')}}">
@@ -209,16 +209,16 @@
                         </li>
                     </ul>
                 </li>
-                
+
                 @endif
-                
-                
-                
+
+
+
             </ul>
-               
 
 
-        
+
+
         </div>
         <!-- Sidebar -->
     </div>

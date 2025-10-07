@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-    
+
     <form method="post" action="{{route('admin.course.store')}}" enctype="multipart/form-data">
         @csrf
         <div class="row">
@@ -43,13 +43,13 @@
                                         <input class="form-control" type="text" placeholder="Course Title"
                                                id="name" name="title" required>
                                         </div>
-                                    
+
                                     <div class="mb-3">
                                         <label  class="form-label">Select Class</label>
                                         <select  class="form-select form-control" name="course_class_id" required>
-                                            @foreach($classes as $class) 
+                                            @foreach($classes as $class)
                                             <option value="{{$class->id}}">{{$class->title}}</option>
-                                         
+
                                             @endforeach
                                         </select>
                                     </div>
@@ -68,7 +68,7 @@
                                         <label for="short_desc" class="form-label">Short Description</label>
                                         <textarea id="short_desc" name="short_desc" class="form-control" required></textarea>
                                     </div>
-                                    
+
                                     <div class="mb-3">
                                         <label for="thumbnail_img" class="form-label">Thumbnail Image</label>
                                         <input class="form-control" type="file" id="thumbnail_img" name="thumbnail_img" required>
@@ -91,6 +91,11 @@
                                         </select>
                                     </div>
 
+                                    <div class="mb-3">
+                                        <label for="affiliate_commission" class="form-label">Affiliate Commission (TK)</label>
+                                        <input type="number" name="affiliate_commission" class="form-control" value="0" min="0" required>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -100,7 +105,7 @@
                                         <input class="form-control" type="text" placeholder="Course Duration"
                                                id="duration" name="duration">
                                     </div>
-                                    
+
                                     <div class="mb-3">
                                         <label for="group_link" class="form-label">Group Link</label>
                                         <input class="form-control" type="text" placeholder="Group Link"
@@ -155,7 +160,7 @@
                                     <label for="long_desc" class="form-label">Long Description</label>
                                     <textarea id="long_desc" name="long_desc"></textarea>
                                 </div>
-                                
+
                                 </div>
                             </div>
                         </div>
@@ -200,8 +205,8 @@
                     </div>
                 </div>
             </div> <!-- end col -->
-        
-        
+
+
         <div class="text-center mt-4 d-grid">
             <button type="submit" class="btn  btn-primary">Update</button>
         </div>
