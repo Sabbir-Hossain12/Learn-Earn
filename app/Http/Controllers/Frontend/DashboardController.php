@@ -313,4 +313,27 @@ class DashboardController extends Controller
             return redirect()->route('student.dashboard.affiliate-withdrawal-history', $withdraw->id)->with('success', 'Withdrawal Request Sent Successfully');
         }
     }
+
+//    Certificate
+    public function dashboardCertificatesPage()
+    {
+        $student_id = auth()->user()->id;
+
+        $enrollments = Enrollment::where('user_id', $student_id)
+            ->where('progress',100.00)
+            ->with(['student', 'course'])
+            ->get();
+
+        $CertificatesPage = view('frontend.pages.dashboard.include.certificates', compact('enrollments'))->render();
+
+        return response()->json(['html' => $CertificatesPage]);
+    }
+
+    public function certificateDetails(string $slug)
+    {
+        $course = Course::where('slug', $slug)->first();
+        return view('frontend.pages.dashboard.certificate.print',compact('course'));
+    }
+
+
 }

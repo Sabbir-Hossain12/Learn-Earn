@@ -3,6 +3,8 @@
 use App\Http\Controllers\Frontend\AiController;
 use App\Http\Controllers\Frontend\Auth\StudentAuthController;
 use App\Http\Controllers\Frontend\BlogController;
+use App\Http\Controllers\Frontend\CommunityAnswerController;
+use App\Http\Controllers\Frontend\CommunityQuestionController;
 use App\Http\Controllers\Frontend\CourseController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Frontend\HomeController;
@@ -104,8 +106,12 @@ Route::prefix('pages')->group(function () {
 //ChatGPT
 Route::get('/ai-assistant', [AiController::class,'aiAssistant'])->name('ai-assistant');
 
+
 Route::post('/chat',AiController::class)->name('chat');
 
+
+Route::resource('/community-questions', CommunityQuestionController::class)->names('community-question')->middleware('student');
+Route::resource('/community-answers', CommunityAnswerController::class)->names('community-answers');
 
 //Student Authentication
 Route::prefix('student/login')->name('student.')->group(function ()
@@ -135,6 +141,9 @@ Route::prefix('student/dashboard')->middleware('student')->name('student.dashboa
     Route::get('/dashboard-exam-attempts',[DashboardController::class,'dashboardExamPage'])->name('exam');
     Route::get('/dashboard-exam-solutions/{id}',[DashboardController::class,'examSolution'])->name('exam.solution');
     Route::get('/dashboard-exam-leaderboard/{id}',[DashboardController::class,'examLeaderboard'])->name('exam.leaderboard');
+
+    Route::get('/dashboard-certificates',[DashboardController::class,'dashboardCertificatesPage'])->name('certificates');
+    Route::get('/dashboard-certificate/{slug}',[DashboardController::class,'certificateDetails'])->name('certificate.details');
 
     Route::get('/dashboard-profiles',[DashboardController::class,'dashboardProfilePage'])->name('profile');
     Route::get('/dashboard-settings',[DashboardController::class,'dashboardSettingsPage'])->name('setting');

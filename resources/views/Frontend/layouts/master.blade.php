@@ -13,12 +13,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
- <!-- Open Graph (Facebook, LinkedIn) -->
+    <!-- Open Graph (Facebook, LinkedIn) -->
     <meta property="og:title" content="{{$basicInfo->meta_title ?? 'schoolmathematics'}}">
     <meta property="og:description" content="{{$basicInfo->meta_desc ?? ''}}">
 
     @if($basicInfo->meta_image)
-    <meta property="og:image" content="{{asset($basicInfo->meta_image)}}">
+        <meta property="og:image" content="{{asset($basicInfo->meta_image)}}">
     @endif
 
     <meta property="og:url" content="https://schoolmathematics.com.bd/">
@@ -29,11 +29,11 @@
     <meta name="twitter:title" content="{{$basicInfo->meta_title ?? 'schoolmathematics'}}">
     <meta name="twitter:description" content="{{$basicInfo->meta_desc ?? ''}}">
     @if($basicInfo->meta_image)
-    <meta name="twitter:image" content="{{asset($basicInfo->meta_image)}}">
+        <meta name="twitter:image" content="{{asset($basicInfo->meta_image)}}">
     @endif
 
     <!--Fav Icon-->
-       <link rel="shortcut icon" type="image/x-icon" href="{{asset($basicInfo->fav_icon ?? 'frontend/img/favicon.ico')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{asset($basicInfo->fav_icon ?? 'frontend/img/favicon.ico')}}">
     <!-- Place favicon.ico in the root directory -->
 
     <!-- CSS here -->
@@ -47,7 +47,7 @@
     <link rel="stylesheet" href="{{asset('frontend')}}/css/plugins_plyr.css">
     <link rel="stylesheet" href="{{asset('frontend')}}/css/style.css">
     <link rel="stylesheet" href="{{asset('frontend')}}/css/progress.css">
-    <link href="{{asset('frontend')}}/css/toastify.min.css" rel="stylesheet" />
+    <link href="{{ asset('frontend') }}/css/toastify.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
           integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -56,10 +56,37 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <style>
-        .wish-active
-        {
+        .wish-active {
             color: red !important;
         }
+
+         .modal-dialog
+        {
+            width: 500px !important;
+        }
+
+        /* Small screens (mobile) */
+        @media (max-width: 576px) {
+            .modal-dialog {
+                width: 95% !important; /* Almost full width */
+                margin: 0.5rem auto;   /* Small margin on top/bottom */
+            }
+        }
+
+        .modal-body p,
+        .modal-body h1,
+        .modal-body h2,
+        .modal-body h3,
+        .modal-body h4,
+        .modal-body h5,
+        .modal-body h6,
+        .modal-body span,
+        .modal-body li {
+            color: #0b0b0b;
+        }
+
+
+
     </style>
     @stack('css')
 </head>
@@ -82,8 +109,62 @@
 
 <main class="main_wrapper overflow-hidden">
 
+    <!-- Trigger Button -->
+    <div class="text-center mt-5 d-none">
+        <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#userAgreementModal"
+        >
+            View User Agreement
+        </button>
+    </div>
 
-@include('Frontend.includes.header')
+    <!-- User Agreement Modal -->
+    <div
+        class="modal fade"
+        id="userAgreementModal"
+        tabindex="-1"
+        aria-labelledby="userAgreementModalLabel"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userAgreementModalLabel">
+                        User Agreement & Terms of Service
+                    </h5>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                </div>
+
+                <div class="modal-body">
+                    {!! $basicInfo->agreement_text ?? '' !!} }
+                </div>
+
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Decline
+                    </button>
+                    <button type="button" class="btn btn-primary" id="acceptAgreement">
+                        Accept & Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @include('Frontend.includes.header')
 
     <!-- theme fixed shadow -->
     <div>
@@ -99,9 +180,6 @@
 
 
 </main>
-
-
-
 
 
 <!-- JS here -->
@@ -121,7 +199,7 @@
 <script src="{{asset('frontend')}}/js/jquery.counterup.min.js"></script>
 <script src="{{asset('frontend')}}/js/plugins.js"></script>
 <script src="{{asset('frontend')}}/js/swiper-bundle.min.js"></script>
-<script src="{{asset('frontend')}}/js/plugin_plyr.js" ></script>
+<script src="{{asset('frontend')}}/js/plugin_plyr.js"></script>
 <script src="{{asset('frontend')}}/js/main.js"></script>
 <script src="{{asset('frontend')}}/js/toastify-js.js"></script>
 <script src="{{asset('frontend')}}/js/config.js"></script>
@@ -165,7 +243,7 @@
 </script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('.wishlist').click(function () {
             var course_id = $(this).data('course-id');
             let $this = $(this);
@@ -194,12 +272,25 @@
                     }
                 },
                 error: function (xhr) {
-                        toastr.error('Please login to add to wishlist');
+                    toastr.error('Please login to add to wishlist');
                 }
             });
         })
 
     })
+</script>
+
+<script>
+    document
+        .getElementById("acceptAgreement")
+        .addEventListener("click", function () {
+            successToast("You have accepted the user agreement.");
+            // Example: Close modal and redirect or enable form submission
+            const modal = bootstrap.Modal.getInstance(
+                document.getElementById("userAgreementModal")
+            );
+            modal.hide();
+        });
 </script>
 
 @stack('js')

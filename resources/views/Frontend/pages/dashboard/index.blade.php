@@ -116,6 +116,17 @@
                                     </li>
 
                                     <li>
+                                        <a href="javascript:void(0);" id="certificateTab">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                 stroke-linecap="round" stroke-linejoin="round"
+                                                 class="feather feather-bookmark">
+                                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                            </svg>
+                                            My Certificates</a>
+                                    </li>
+
+                                    <li>
                                         <a href="javascript:void(0);" id="wishTab">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -246,6 +257,7 @@
                 $('#courseTab').removeClass('active');
                 $('#examTab').removeClass('active');
                 $('#SettingsTab').removeClass('active');
+                $('#certificateTab').removeClass('active');
 
                 $.ajax({
                     headers: {
@@ -295,6 +307,7 @@
                 $('#courseTab').removeClass('active');
                 $('#examTab').removeClass('active');
                 $('#SettingsTab').removeClass('active');
+                $('#certificateTab').removeClass('active');
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -342,6 +355,7 @@
                 $('#examTab').removeClass('active');
                 $('#SettingsTab').removeClass('active');
                 $('#wishTab').removeClass('active');
+                $('#certificateTab').removeClass('active');
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -389,6 +403,7 @@
                 $('#examTab').removeClass('active');
                 $('#SettingsTab').removeClass('active');
                 $('#courseTab').removeClass('active');
+                $('#certificateTab').removeClass('active');
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -424,6 +439,55 @@
                 })
             });
 
+            //Certificates
+            $(document).on('click', '#certificateTab', function (e) {
+
+                e.preventDefault();
+
+
+                $(this).addClass('active'); // Add active class to the clicked element's anchor
+                $('#dashSummeryTab').removeClass('active');
+                $('#profileTab').removeClass('active');
+                $('#examTab').removeClass('active');
+                $('#SettingsTab').removeClass('active');
+                $('#courseTab').removeClass('active');
+                $('#wishTab').removeClass('active');
+
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    method: 'GET',
+                    url: "{{route('student.dashboard.certificates')}}",
+
+                    // contentType: false,
+                    // processData: false,
+                    beforeSend: function() {
+                        // Show loader
+                        // showLoader();
+                    },
+
+                    success: function (res) {
+
+                        $('#dashboardMainContent').empty();
+                        $('#dashboardMainContent').append(res.html);
+
+                        $("html, body").animate({
+                            scrollTop: $("#enrolledCourseSection").offset().top - 100
+                        }, 200); // 800ms smooth scrolling
+
+                    },
+                    error: function (err) {
+
+                        errorToast('error');
+                    },
+                    complete: function() {
+                        // Hide loader
+                        // hideLoader();
+                    }
+                })
+            });
+
             //Attempted Exams
             $(document).on('click', '#examTab', function (e) {
 
@@ -436,6 +500,7 @@
                 $('#profileTab').removeClass('active');
                 $('#courseTab').removeClass('active');
                 $('#SettingsTab').removeClass('active');
+                $('#certificateTab').removeClass('active');
 
                 $.ajax({
                     headers: {
@@ -484,6 +549,7 @@
                 $('#profileTab').removeClass('active');
                 $('#courseTab').removeClass('active');
                 $('#examTab').removeClass('active');
+                $('#certificateTab').removeClass('active');
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

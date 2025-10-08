@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\About;
 use App\Models\Blog;
+use App\Models\CommunityQuestion;
 use App\Models\Course;
 use App\Models\CourseClass;
 use App\Models\Herobanner;
@@ -28,31 +29,30 @@ class HomeController extends Controller
             session(['ref_code' => $affiliateCode]);
         }
 
-        $heroBanner= Herobanner::first();
-        $services = CourseClass::where('status',1)->where('is_featured',1)->orderBy('position','asc')->get();
-        $about= About::first();
-        $testimonials= Testimonial::where('status',1)->get();
-        $testimonialSetting= TestimonialSetting::first();
-        $featuredCourses= Course::with('class','teacher')->where('status',1)->where('is_featured',1)->get();
-        $teachers= User::role('teacher')->where('status',1)->get();
-        $blogs= Blog::where('status',1)->limit(3)->get();
+        $heroBanner = Herobanner::first();
+        $services = CourseClass::where('status', 1)->where('is_featured', 1)->orderBy('position', 'asc')->get();
+        $about = About::first();
+        $testimonials = Testimonial::where('status', 1)->get();
+        $testimonialSetting = TestimonialSetting::first();
+        $featuredCourses = Course::with('class', 'teacher')->where('status', 1)->where('is_featured', 1)->get();
+        $teachers = User::role('teacher')->where('status', 1)->get();
+        $blogs = Blog::where('status', 1)->limit(3)->get();
 
-        $randomCourse= Course::where('status',1)->inRandomOrder()->limit(6)->get();
-        $courseClasses= CourseClass::where('status',1)->where('is_featured',1)->orderBy('position','asc')->limit(4)->get();
+        $randomCourse = Course::where('status', 1)->inRandomOrder()->limit(6)->get();
+        $courseClasses = CourseClass::where('status', 1)->where('is_featured', 1)->orderBy('position', 'asc')->limit(4)->get();
 
 
-
-        return view('Frontend.pages.home',compact(['heroBanner','randomCourse','courseClasses','teachers','about','services','testimonials','testimonialSetting','blogs','featuredCourses']));
+        return view('Frontend.pages.home', compact(['heroBanner', 'randomCourse', 'courseClasses', 'teachers', 'about', 'services', 'testimonials', 'testimonialSetting', 'blogs', 'featuredCourses']));
     }
 
 
     public function page(string $slug)
     {
-       $content= Page::where('slug', 'like' , '%'.$slug.'%')->orWhere('slug', $slug)->first();
+        $content = Page::where('slug', 'like', '%' . $slug . '%')->orWhere('slug', $slug)->first();
 
-       if ($content->slug == $slug) {
-           return view('Frontend.pages.info.about-us',compact('content'));
-       }
+        if ($content->slug == $slug) {
+            return view('Frontend.pages.info.about-us', compact('content'));
+        }
 
     }
 
@@ -70,7 +70,7 @@ class HomeController extends Controller
                 'status' => 'error',
                 'action' => 'unauthorized',
                 'message' => 'Login to Continue',
-            ],401);
+            ], 401);
         }
 
         $user_id = Auth::user()->id;
@@ -84,7 +84,7 @@ class HomeController extends Controller
                 'status' => 'success',
                 'action' => 'remove',
                 'message' => 'Course removed from wishlist',
-            ],200);
+            ], 200);
         }
 
         $wishlist = new Wishlist();
@@ -96,6 +96,13 @@ class HomeController extends Controller
             'status' => 'success',
             'action' => 'add',
             'message' => 'Course added to wishlist',
-        ],201);
+        ], 201);
+    }
+
+    //Q/A Community
+    public function communityPage()
+    {
+        $questions = CommunityQuestion::with('user')->latest()->get();
+        return view('Frontend.pages.community.question', compact('questions'));
     }
 }

@@ -213,10 +213,17 @@
                                         </a>
                                     </li>
 
+{{--                                    <li>--}}
+{{--                                        <a class="headerarea__has__dropdown"--}}
+{{--                                           id="{{Route::is('ai-assistant') ? 'active-nav' : ''}}"--}}
+{{--                                           href="{{route('ai-assistant')}}">AI Assistant--}}
+{{--                                        </a>--}}
+{{--                                    </li> --}}
+
                                     <li>
                                         <a class="headerarea__has__dropdown"
-                                           id="{{Route::is('ai-assistant') ? 'active-nav' : ''}}"
-                                           href="{{route('ai-assistant')}}">AI Assistant
+                                           id="{{Route::is('community-page') ? 'active-nav' : ''}}"
+                                           href="{{route('community-question.index')}}">Q/A Section
                                         </a>
                                     </li>
 

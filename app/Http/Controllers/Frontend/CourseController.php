@@ -404,6 +404,29 @@ foreach ($allQuestionIds as $questionId) {
         $assessmentGrade->attempts += 1;
         $save = $assessmentGrade->save();
 
+
+//        Progress update
+      $totalAssessment = Assessment::where('course_id', $assessment->course_id)->count();
+
+      $completed = AssessmentGrade::where('student_id', $student_id)
+          ->whereIn('assessment_id', function ($q) use ($assessment) {
+              $q->select('id')->from('assessments')->where('course_id', $assessment->course_id);
+          })
+          ->distinct('assessment_id')
+          ->count('assessment_id');
+
+      $enroll = Enrollment::where('user_id', $student_id)
+          ->where('course_id', $assessment->course_id)
+          ->first();
+
+      $progress = $totalAssessment > 0
+          ? round(($completed / $totalAssessment) * 100)
+          : 0;
+
+      $enroll->progress = $progress;
+      $enroll->save();
+
+
         if ($save) {
             return response()->json(['status' => 'success', 'message' => 'Your Response Submitted successfully'], 201);
         }
