@@ -1,7 +1,7 @@
 @extends('Frontend.layouts.master')
 
 @section('content')
-    
+
     <style>
         .active{
             color: #0d6efd !important;
@@ -14,254 +14,185 @@
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 justify-content-center">
                     @isset($course->group_link)
-                    <p class="text-center">Please Join the Community Group <a class="text-primary" href="{{ $course->group_link }}">Here</a></span>
+                    <p class="text-center">Please Join the Community Group <a class="text-primary" href="{{ $course->group_link }}">Here</a></p>
                     @endisset()
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12" id="lessonSidebar" data-aos="fade-up" >
 
-                    <div class="accordion content__cirriculum__wrap" id="accordionExample">
+                    <div class="accordion content__cirriculum__wrap" id="subjectAccordion">
                         @forelse($subjects as $subject)
-                            <div class="subject-wrapper">
-                                <h3 class="subject-title">{{$subject->title}}</h3>
+                            <div class="accordion-item subject-wrapper">
+                                <h2 class="accordion-header" id="subjectHeading{{ $subject->id }}">
+                                    <button class="accordion-button collapsed"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#subjectCollapse{{ $subject->id }}"
+                                            aria-expanded="false"
+                                            aria-controls="subjectCollapse{{ $subject->id }}">
+                                        {{ $subject->title }}
+                                    </button>
+                                </h2>
 
-                            @forelse($subject->lessons as $key=> $lesson)
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingOne">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                    data-bs-target="#collapse{{$lesson->id}}" aria-expanded="true"
-                                                    aria-controls="collapse{{$lesson->id}}">
-                                                {{$lesson->title}}
-                                                <span>{{$lesson->duration}}</span>
-                                            </button>
-                                        </h2>
-                                        <div id="collapse{{$lesson->id}}"
-                                             class="accordion-collapse collapse @if($key == 0) show @endif"
-                                             aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                            <div class="accordion-body">
+                                <div id="subjectCollapse{{ $subject->id }}"
+                                     class="accordion-collapse collapse"
+                                     aria-labelledby="subjectHeading{{ $subject->id }}"
+                                     data-bs-parent="#subjectAccordion">
+                                    <div class="accordion-body">
 
-                                                @if($lesson->lessonVideos->count() > 0)
+                                        {{-- Loop through all lessons of the subject --}}
+                                        @forelse($subject->lessons as $key => $lesson)
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="lessonHeading{{ $lesson->id }}">
+                                                    <button class="accordion-button collapsed"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#lessonCollapse{{ $lesson->id }}"
+                                                            aria-expanded="false"
+                                                            aria-controls="lessonCollapse{{ $lesson->id }}">
+                                                        {{ $lesson->title }}
+                                                        <span>{{ $lesson->duration }}</span>
+                                                    </button>
+                                                </h2>
 
-                                                    @forelse($lesson->lessonVideos as $key1=>$video)
-                                                        <div class="scc__wrap">
-                                                            <div class="scc__info">
-                                                                <i class="icofont-video-alt"></i>
-                                                                
-                                                                @if(!$enrollment)
-                                                                    
-                                                                <h5>
-                                                                    <a data-id="{{$video->id}}" data-lesson-id="{{$lesson->id}}" class="@if($key==0 &&  ($key1 == 0 || $key1 == 1))lessonVideoAnchor @else @endif"  href="javascript:void(0)">
-                                                                        <span>{{$video->title}}</span>
-                                                                    </a>
-                                                                </h5>
-                                                                    
-                                                                @else
-                                                                    
-                                                                    <h5>
-                                                                        <a data-id="{{$video->id}}" data-lesson-id="{{$lesson->id}}" class="lessonVideoAnchor"   href="javascript:void(0)"><span>{{$video->title}}</span></a>
-                                                                    </h5>
-                                                                    
-                                                                @endif
-                                                            </div>
+                                                <div id="lessonCollapse{{ $lesson->id }}"
+                                                     class="accordion-collapse collapse"
+                                                     aria-labelledby="lessonHeading{{ $lesson->id }}"
+                                                     data-bs-parent="#subjectCollapse{{ $subject->id }}">
+                                                    <div class="accordion-body">
 
-                                                            <div class="scc__meta">
-                                                                <strong>{{$video->duration}}</strong>
-                                                                
-                                                                @if($enrollment)
-                                                                    <a  data-id="{{$video->id}}" data-lesson-id="{{$lesson->id}}" href="#"><span class="question"><i
-                                                                                    class="icofont-eye lessonVideoAnchor"></i></span></a>
-                                                                @else
-                                                                <a href="#"><span class="question"><i
-                                                                                class=" @if($key==0 &&  ($key1 == 0 || $key1 == 1))  icofont-eye @else icofont-lock  @endif"></i></span></a>
-                                                                @endif
-                                                            </div>
-
-                                                        </div>
-                                                    @empty
-                                                    @endforelse
-                                                @endif
-
-
-                                                @if($lesson->lessonMaterials->count() > 0)
-                                                    @forelse($lesson->lessonMaterials as $key2=>$material)
-                                                        <div class="scc__wrap">
-                                                            <div class="scc__info">
-                                                                <i class="icofont-file-text"></i>
-                                                                
-                                                                @if($enrollment)
-                                                                <h5>
-                                                                    <a data-id="{{$material->id}}" data-lesson-id="{{$lesson->id}}" class="lessonMaterialAnchor" href="javascript:void(0)">
-                                                                        <span>{{$material->title}}</span>
-                                                                    </a>
-                                                                </h5>
-                                                                    
-                                                                @else
-
-                                                                    <h5>
-                                                                        <a  class="" href="javascript:void(0)">
-                                                                            <span>{{$material->title}}</span>
-                                                                        </a>
-                                                                    </h5>
-                                                                    
-                                                                @endif
-                                                            </div>
-
-                                                            <div class="scc__meta">
-{{--                                                          <strong>3.27</strong>--}}
-
-                                                                @if($enrollment)
-
-                                                                    <a href="#"><span class="question"><i
-                                                                                    class="icofont-eye"></i></span></a>
-                                                                @else
-                                                                <a href="#"><span class="question"><i
-                                                                                class="icofont-lock"></i></span></a>
-                                                                @endif
-                                                            </div>
-
-                                                        </div>
-                                                    @empty
-                                                    @endforelse
-                                                @endif
-                                                
-                                                <!--Live Start-->
-                                                 @if($lesson->lessonLives->count() > 0)
-                                                    @forelse($lesson->lessonLives as $key2=>$lives)
-                                                        <div class="scc__wrap">
-                                                            <div class="scc__info">
-                                                                <i class="icofont-record"></i>
-                                                                
-                                                                @if($enrollment)
-                                                                <h5>
-                                                                    <a data-id="{{$lives->id}}" data-lesson-id="{{$lesson->id}}" class="lessonLiveAnchor" href="javascript:void(0)">
-                                                                        <span>{{$lives->title}}</span>
-                                                                    </a>
-                                                                </h5>
-                                                                    
-                                                                @else
-
-                                                                    <h5>
-                                                                        <a  class="" href="javascript:void(0)">
-                                                                            <span>{{$lives->title}}</span>
-                                                                        </a>
-                                                                    </h5>
-                                                                    
-                                                                @endif
-                                                            </div>
-
-                                                            <div class="scc__meta">
-{{--                                                          <strong>3.27</strong>--}}
-
-                                                                @if($enrollment)
-
-                                                                    <a href="#"><span class="question"><i
-                                                                                    class="icofont-eye"></i></span></a>
-                                                                @else
-                                                                <a href="#"><span class="question"><i
-                                                                                class="icofont-lock"></i></span></a>
-                                                                @endif
-                                                            </div>
-
-                                                        </div>
-                                                    @empty
-                                                    @endforelse
-                                                @endif
-                                                
-                                                <!--Live End-->
-
-
-                                                @if($lesson->assessments->count() > 0)
-                                                    @forelse($lesson->assessments as $key2=>$assessment)
-
-{{--                                                        @if($assessment->type == 'quiz')--}}
-
-                                                            <div class="scc__wrap">
-                                                                <div class="scc__info">
-                                                                    <i class="icofont-audio"></i>
-                                                                    
-                                                                    @if($enrollment)
+                                                        {{-- ✅ Lesson Videos --}}
+                                                        @if($lesson->lessonVideos->count() > 0)
+                                                            @foreach($lesson->lessonVideos as $video)
+                                                                <div class="scc__wrap">
+                                                                    <div class="scc__info">
+                                                                        <i class="icofont-video-alt"></i>
                                                                         <h5>
-                                                                            <a data-id="{{$assessment->id}}" data-lesson-id="{{$lesson->id}}" class="lessonExamAnchor" href="javascript:void(0)">
-                                                                                <span>{{$assessment->title}}</span>
+                                                                            <a data-id="{{ $video->id }}"
+                                                                               data-lesson-id="{{ $lesson->id }}"
+                                                                               class="lessonVideoAnchor"
+                                                                               href="javascript:void(0)">
+                                                                                <span>{{ $video->title }}</span>
                                                                             </a>
                                                                         </h5>
+                                                                    </div>
+                                                                    <div class="scc__meta">
+                                                                        <strong>{{ $video->duration }}</strong>
+                                                                        <a href="#"><span class="question"><i class="icofont-eye"></i></span></a>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
 
-                                                                    @else
-
+                                                        {{-- ✅ Lesson Materials --}}
+                                                        @if($lesson->lessonMaterials->count() > 0)
+                                                            @foreach($lesson->lessonMaterials as $material)
+                                                                <div class="scc__wrap">
+                                                                    <div class="scc__info">
+                                                                        <i class="icofont-file-text"></i>
                                                                         <h5>
-                                                                            <a  class="" href="javascript:void(0)">
-                                                                                <span>{{$assessment->title}}</span>
+                                                                            <a data-id="{{ $material->id }}"
+                                                                               data-lesson-id="{{ $lesson->id }}"
+                                                                               class="lessonMaterialAnchor"
+                                                                               href="javascript:void(0)">
+                                                                                <span>{{ $material->title }}</span>
                                                                             </a>
                                                                         </h5>
-
-                                                                    @endif
-
-                                                                   
+                                                                    </div>
+                                                                    <div class="scc__meta">
+                                                                        <a href="#"><span class="question"><i class="icofont-eye"></i></span></a>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="scc__meta">
-{{--                                                                  <strong>3.27</strong>--}}
-                                                                    
-                                                                    @if($enrollment)
-                                                                        <a href="#"><span class="question"><i
-                                                                                        class="icofont-eye"></i></span></a>
-                                                                    @else
-                                                                    <a href="#"><span class="question"><i
-                                                                                    class="icofont-lock"></i></span></a>
-                                                                    @endif
+                                                            @endforeach
+                                                        @endif
+
+                                                        {{-- ✅ Lesson Lives --}}
+                                                        @if($lesson->lessonLives->count() > 0)
+                                                            @foreach($lesson->lessonLives as $live)
+                                                                <div class="scc__wrap">
+                                                                    <div class="scc__info">
+                                                                        <i class="icofont-record"></i>
+                                                                        <h5>
+                                                                            <a data-id="{{ $live->id }}"
+                                                                               data-lesson-id="{{ $lesson->id }}"
+                                                                               class="lessonLiveAnchor"
+                                                                               href="javascript:void(0)">
+                                                                                <span>{{ $live->title }}</span>
+                                                                            </a>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div class="scc__meta">
+                                                                        <a href="#"><span class="question"><i class="icofont-eye"></i></span></a>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                            @endforeach
+                                                        @endif
 
-{{--                                                        @else--}}
-                                                            
+                                                        {{-- ✅ Lesson Assessments (Exam / MCQ) --}}
+                                                        @if($lesson->assessments->count() > 0)
+                                                            @foreach($lesson->assessments as $assessment)
+                                                                <div class="scc__wrap">
+                                                                    <div class="scc__info">
+                                                                        <i class="icofont-audio"></i>
+                                                                        <h5>
+                                                                            <a data-id="{{ $assessment->id }}"
+                                                                               data-lesson-id="{{ $lesson->id }}"
+                                                                               class="lessonExamAnchor"
+                                                                               href="javascript:void(0)">
+                                                                                <span>{{ $assessment->title }}</span>
+                                                                            </a>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div class="scc__meta">
+                                                                        <a href="#"><span class="question"><i class="icofont-eye"></i></span></a>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
 
-{{--                                                        @endif--}}
-
-                                                    @empty
-                                                    @endforelse
-
-                                                @endif
-
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                @empty
-                                <h5>No Lessons added Yet</h5>
-                                @endforelse
-                            
+                                        @empty
+                                            <h5>No Lessons added yet</h5>
+                                        @endforelse
 
+                                    </div>
+                                </div>
                             </div>
                         @empty
                             <h3>No Subject Yet</h3>
                         @endforelse
                     </div>
+
                 </div>
-                
+
                 <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12" data-aos="fade-up" id="lessonContent">
-                    
+
                 </div>
             </div>
 
         </div>
     </div>
-    
+
 
     @push('js')
         <script>
-            
+
             $(document).on('click', '.lessonVideoAnchor', function (e) {
-               
+
                 e.preventDefault();
                 let id= $(this).data('id');
                 let lessonId= $(this).data('lesson-id');
-                
+
                  $('.lessonLiveAnchor').removeClass('active');
                 $('.lessonVideoAnchor').removeClass('active');
                 $('.lessonMaterialAnchor').removeClass('active');
                 $('.lessonExamAnchor').removeClass('active');// Remove active class from all anchors
                 $(this).addClass('active'); // Add active class to the clicked element's anchor
-                
+
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -273,7 +204,7 @@
                         lesson_id:lessonId
 
                     },
-                   
+
                     // contentType: false,
                     // processData: false,
                     beforeSend: function() {
@@ -281,7 +212,7 @@
                         showLoader();
                     },
                     success: function (res) {
-                        
+
                         $('#lessonContent').empty();
                         $('#lessonContent').append(res.html);
 
@@ -306,10 +237,10 @@
               // Select the first visible .lessonVideoAnchor and trigger a click
               $('.lessonVideoAnchor:first').trigger('click');
               $('.lessonVideoAnchor:first').addClass('active');
-              
+
           });
-          
-          
+
+
             //material
             $(document).on('click', '.lessonMaterialAnchor', function (e) {
 
@@ -323,7 +254,7 @@
                 $('.lessonExamAnchor').removeClass('active');// Remove active class from all anchors
                 $(this).addClass('active'); // Add active class to the clicked element's anchor
 
-               
+
 
 
                 $.ajax({
@@ -365,7 +296,7 @@
                     }
                 })
             });
-            
+
             //Live
              $(document).on('click', '.lessonLiveAnchor', function (e) {
 
@@ -379,7 +310,7 @@
                 $('.lessonExamAnchor').removeClass('active');// Remove active class from all anchors
                 $(this).addClass('active'); // Add active class to the clicked element's anchor
 
-               
+
 
 
                 $.ajax({
@@ -421,7 +352,7 @@
                     }
                 })
             });
-            
+
             //exam
             $(document).on('click', '.lessonExamAnchor', function (e) {
 
@@ -435,7 +366,7 @@
                 // Remove active class from all anchors
                 $(this).addClass('active'); // Add active class to the clicked element's anchor
                 $('.katex-html').hide();
-                
+
                 Swal.fire({
                     title: "You Want to Resume Exam?",
                     // text: "You won't be able to revert this!",
@@ -467,7 +398,7 @@
 
                                 $('#lessonContent').empty();
                                 $('#lessonContent').append(res.html);
-                                
+
                                 $("html, body").animate({
                             scrollTop: $("#lessonContent").offset().top - 300
                         }, 200); // 800ms smooth scrolling
@@ -484,11 +415,11 @@
                         })
                     }
                 });
-                
-              
+
+
             });
-          
-          
+
+
 
         </script>
     @endpush

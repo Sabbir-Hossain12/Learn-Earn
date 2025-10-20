@@ -5,21 +5,20 @@
             <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12" data-aos="fade-up">
                 <div class="registerarea__wraper">
                     <div class="section__title registerarea__section__title">
-                        <div class="section__title__button">
-                            <div class="default__small__button">Course List</div>
-                        </div>
+
                         <div class="section__title__heading heading__underline">
-                            <h2>Register Your <span>Account </span>Get free access to <small>60000</small> online course
+                            <h2>Register as a <span>Teacher </span>and Earn<small>Through</small> online courses
                             </h2>
                         </div>
                     </div>
                     <div class="registerarea__content">
                         <div class="registerarea__video">
                             <div class="video__pop__btn">
-                                <a class="video-btn" href="../../../www.youtube.com/watch8399.html?v=vHdclsdkp28"> <img loading="lazy" src="{{asset('frontend')}}/img/icon/video.png" alt=""></a>
+                                <a class="video-btn" href="{{ $heroBanner->video_url ?? '' }}"> <img loading="lazy" src="{{ asset('frontend') }}/img/icon/video.png" alt=""></a>
                             </div>
+
                             <div class="registerarea__para">
-                                <p>Learn Something new & Build Your Career From Anywhere In The World</p>
+                                <p>Teach Something new &amp; Build Your Career From Anywhere In The World</p>
                             </div>
 
                         </div>
@@ -34,22 +33,38 @@
                     <div class="registerarea__form__heading">
                         <h4>Fill Your Registration</h4>
                     </div>
-                    <form action="#">
-                        <input class="register__input" type="text" placeholder="Your Name">
+                    <form action="{{ route('register-as-teacher') }}" method="post" id="teacher-registration-section">
+                        @csrf
+                        <input class="register__input" type="text" placeholder="Your Name" name="name" required>
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                         <div class="row">
                             <div class="col-xl-6">
-                                <input class="register__input" type="text" placeholder="Email Address">
+                                <input class="register__input" type="text" name="email" placeholder="Email Address" required>
                             </div>
+                            @error('email')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
                             <div class="col-xl-6">
-                                <input class="register__input" type="text" placeholder="Phone">
+                                <input class="register__input" type="text" name="phone" placeholder="Phone" required>
                             </div>
+                            @error('phone')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
-                        <input class="register__input" type="text" placeholder="Address">
-                        <textarea class="register__input textarea" name="#" id="#" cols="30" rows="10">Comment</textarea>
+                        <input class="register__input" type="text" name="address" placeholder="Address">
+                        @error('address')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                        <textarea class="register__input textarea" name="info" id="#" cols="30" rows="10">Educational Qualification or Experience</textarea>
+                        @error('info')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                         <div class="registerarea__button">
-                            <a class="default__button" href="#">Sign Up
+                            <button type="submit" class="default__button">Sign Up
                                 <i class="icofont-long-arrow-right"></i>
-                            </a>
+                            </button>
                         </div>
                     </form>
                 </div>

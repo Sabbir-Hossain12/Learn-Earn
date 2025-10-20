@@ -88,6 +88,8 @@ Route::post('/quiz-submit',[CourseController::class,'quizSubmit'])->name('quiz.s
 Route::get('/teachers',[TeacherController::class,'teachersPage'])->name('teacher.page');
 Route::get('/teacher_details/{slug}',[TeacherController::class,'teachersDetails'])->name('teacher.details');
 
+//Register as Teacher
+Route::post('/register-as-teacher', [TeacherController::class,'registerAsTeacher'])->name('register-as-teacher');
 
 //Blogs
 Route::get('/blog-list', [BlogController::class,'blogList'])->name('blog-list');
@@ -106,9 +108,7 @@ Route::prefix('pages')->group(function () {
 //ChatGPT
 Route::get('/ai-assistant', [AiController::class,'aiAssistant'])->name('ai-assistant');
 
-
 Route::post('/chat',AiController::class)->name('chat');
-
 
 Route::resource('/community-questions', CommunityQuestionController::class)->names('community-question')->middleware('student');
 Route::resource('/community-answers', CommunityAnswerController::class)->names('community-answers');
@@ -160,7 +160,6 @@ Route::prefix('student/dashboard')->middleware('student')->name('student.dashboa
 
 
     //Bkash
-
     // Payment Routes for bKash
     Route::get('/bkash/payment', [App\Http\Controllers\BkashTokenizePaymentController::class,'index'])->middleware(\App\Http\Middleware\StudentMiddleware::class);
     Route::get('/bkash/create-payment', [App\Http\Controllers\BkashTokenizePaymentController::class,'createPayment'])->middleware(\App\Http\Middleware\StudentMiddleware::class)->name('bkash-create-payment');

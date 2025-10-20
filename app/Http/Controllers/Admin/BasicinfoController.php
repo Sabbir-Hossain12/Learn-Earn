@@ -53,6 +53,10 @@ class BasicinfoController extends Controller
         $basicInfo->opening_hours_text=$request->opening_hours_text;
         $basicInfo->marquee_text = $request->marquee_text;
         $basicInfo->agreement_text = $request->agreement_text;
+        $basicInfo->special_category_title = $request->special_category_title;
+        $basicInfo->course_list_title = $request->course_list_title;
+        $basicInfo->register_title = $request->register_title;
+        $basicInfo->register_subtitle = $request->register_subtitle;
 
         $basicInfo->signature_author = $request->signature_author;
 
@@ -150,6 +154,12 @@ class BasicinfoController extends Controller
         $basicInfo->opening_hours_text=$request->opening_hours_text;
         $basicInfo->marquee_text = $request->marquee_text;
         $basicInfo->agreement_text = $request->agreement_text;
+
+        $basicInfo->special_category_title = $request->special_category_title;
+        $basicInfo->course_list_title = $request->course_list_title;
+        $basicInfo->register_title = $request->register_title;
+        $basicInfo->register_subtitle = $request->register_subtitle;
+
 
         $basicInfo->signature_author = $request->signature_author;
 

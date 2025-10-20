@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Lesson extends Model
 {
 
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
     public function subject()
     {
         return $this->belongsTo(Subject::class);
@@ -21,18 +26,18 @@ class Lesson extends Model
     {
         return $this->hasMany(LessonMaterial::class);
     }
-    
+
     public function lessonLives()
     {
         return $this->hasMany(LessonLive::class);
     }
-    
-    
-    
+
+
+
     public function assessments()
     {
         return $this->hasMany(Assessment::class);
     }
-    
-    
+
+
 }

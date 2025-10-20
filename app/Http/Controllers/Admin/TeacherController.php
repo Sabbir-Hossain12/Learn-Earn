@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\Enrollment;
+use App\Models\Lesson;
+use App\Models\TeacherRegister;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -64,6 +67,10 @@ class TeacherController extends Controller
                                    data-id="'.$admin->id.'" id="deleteAdminBtn"">
                                    <i class="fas fa-trash"></i></a>';
 
+                $viewAction = '<a class="btn btn-sm btn-success" href="'.route('admin.teacher.show',$admin->id).'"
+                                    id="viewAdminBtn"">
+                                   <i class="fas fa-eye"></i></a>';
+
 //              if(Auth::guard('admin')->user()->can('Edit Admin')) {
 //
 //                  $editAction= '<a class="editButton btn btn-sm btn-primary" href="javascript:void(0)"
@@ -80,7 +87,7 @@ class TeacherController extends Controller
 //
 //              }
 
-                return '<div class="d-flex gap-3"> '.$editAction.$deleteAction.'</div>';
+                return '<div class="d-flex gap-3"> '.$viewAction.$editAction.$deleteAction.'</div>';
             })
             ->rawColumns(['action', 'status', 'role'])
             ->make(true);
@@ -132,7 +139,25 @@ class TeacherController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $teacher = User::find($id);
+
+        $total_courses = Course::where('teacher_id', $teacher->id)->count();
+
+        $total_lessons = Lesson::whereHas('course',function ($query) use ($teacher) {
+            $query->where('teacher_id', $teacher->id);
+        })->count();
+
+        $total_enrollments = Enrollment::whereHas('course', function ($query) use ($teacher) {
+            $query->where('teacher_id', $teacher->id);
+        })->count();
+
+        $total_earnings = Enrollment::join('courses', 'enrollments.course_id', '=', 'courses.id')
+            ->where('courses.teacher_id', $teacher->id)
+            ->sum('courses.sale_price');
+
+
+
+        return view('backend.pages.teachers.show', compact('teacher','total_earnings','total_enrollments','total_courses','total_lessons'));
     }
 
     /**

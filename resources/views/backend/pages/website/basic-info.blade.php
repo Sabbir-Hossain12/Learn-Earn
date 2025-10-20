@@ -281,6 +281,53 @@
                             </div>
                         </div> <!-- end col -->
                     </div>
+
+                    {{-- Website Title Starts--}}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title text-center">Website Titles  </h4>
+                                </div>
+
+                                <div class="card-body p-4">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div>
+                                                <div class="mb-3">
+                                                    <label for="agreement_text" class="form-label">Special Category Title</label>
+                                                    <textarea class="form-control" name="special_category_title" id="agreement_text">{{ $basicInfo->special_category_title ?? '' }}</textarea>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="course_list_title" class="form-label">Course List Title</label>
+                                                    <textarea class="form-control" name="course_list_title" id="course_list_title">{{ $basicInfo->course_list_title ?? '' }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div>
+                                                <div class="mb-3">
+                                                    <label for="agreement_text" class="form-label">Teacher Register Title</label>
+                                                    <textarea class="form-control" name="special_category_title" id="agreement_text">{{ $basicInfo->special_category_title ?? '' }}</textarea>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="register_subtitle" class="form-label">Teacher Register Subtitle</label>
+                                                    <textarea class="form-control" name="register_subtitle" id="register_subtitle">{{ $basicInfo->register_subtitle ?? '' }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div> <!-- end col -->
+                    </div>
+                    {{-- Website Title End--}}
+
                     <div class="row">
                         <div class="col-12">
                             <div class="card">

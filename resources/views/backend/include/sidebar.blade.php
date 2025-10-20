@@ -57,6 +57,11 @@
                                 <span data-key="t-calendar">Teacher List</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('admin.teacher-registers.index') }}">
+                                <span data-key="t-calendar">Pending</span>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>

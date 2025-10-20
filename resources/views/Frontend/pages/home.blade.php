@@ -17,11 +17,10 @@
 
     @include('Frontend.includes.popular')
 
-    @include('Frontend.includes.newly-launched')
 
     @include('Frontend.includes.courses')
 
-{{--    @include('Frontend.includes.register')--}}
+    @include('Frontend.includes.register')
 
     @include('Frontend.includes.team')
 

@@ -30,16 +30,16 @@ class HomeController extends Controller
         }
 
         $heroBanner = Herobanner::first();
-        $services = CourseClass::where('status', 1)->where('is_featured', 1)->orderBy('position', 'asc')->get();
+        $services = CourseClass::where('status', 1)->where('is_featured', 1)->inRandomOrder()->get();
         $about = About::first();
         $testimonials = Testimonial::where('status', 1)->get();
         $testimonialSetting = TestimonialSetting::first();
-        $featuredCourses = Course::with('class', 'teacher')->where('status', 1)->where('is_featured', 1)->get();
-        $teachers = User::role('teacher')->where('status', 1)->get();
-        $blogs = Blog::where('status', 1)->limit(3)->get();
+        $featuredCourses = Course::with('class', 'teacher')->where('status', 1)->where('is_featured', 1)->inRandomOrder()->get();
+        $teachers = User::role('teacher')->where('status', 1)->inRandomOrder()->limit(9)->get();
+        $blogs = Blog::where('status', 1)->inRandomOrder()->limit(3)->get();
 
         $randomCourse = Course::where('status', 1)->inRandomOrder()->limit(6)->get();
-        $courseClasses = CourseClass::where('status', 1)->where('is_featured', 1)->orderBy('position', 'asc')->limit(4)->get();
+        $courseClasses = CourseClass::where('status', 1)->where('is_featured', 1)->inRandomOrder()->limit(4)->get();
 
 
         return view('Frontend.pages.home', compact(['heroBanner', 'randomCourse', 'courseClasses', 'teachers', 'about', 'services', 'testimonials', 'testimonialSetting', 'blogs', 'featuredCourses']));

@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\TeacherController;
+use App\Http\Controllers\Admin\TeacherRegisterController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\LessonLiveController;
 use App\Http\Controllers\Admin\CouponController;
@@ -69,6 +70,10 @@ Route::prefix('admin')->name('admin.')->middleware(['checkAuth'])->group(functio
     Route::get('/teacher/data', [TeacherController::class, 'getData'])->name('teacher.data');
     Route::post('/change-teacher-status', [TeacherController::class, 'changeTeacherStatus'])->name('teacher.status');
 
+    //Pending Teacher
+    Route::resource('/teacher-registers', TeacherRegisterController::class)->names('teacher-registers');
+    Route::get('/teacher-register/data', [TeacherRegisterController::class, 'getData'])->name('teacher-register.data');
+    Route::post('/change-teacher-register-status', [TeacherRegisterController::class, 'changeTeacherStatus'])->name('teacher.status');
     //Student
     Route::resource('/students', StudentController::class)->names('student');
     Route::get('/student/data', [StudentController::class, 'getData'])->name('student.data');
