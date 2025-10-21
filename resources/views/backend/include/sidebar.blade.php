@@ -27,7 +27,8 @@
                     </a>
                 </li>
 
-                <li>
+                @role('admin')
+                    <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fa-solid fa-user-secret"></i>
                         <span data-key="t-apps">Admins</span>
@@ -46,7 +47,10 @@
 {{--                        </li>--}}
                     </ul>
                 </li>
-                <li>
+                @endrole
+
+                @role('admin')
+                    <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fa-solid fa-user-alt"></i>
                         <span data-key="t-apps">Teachers</span>
@@ -65,8 +69,10 @@
 
                     </ul>
                 </li>
+                @endrole
 
-                <li>
+                @role('admin')
+                    <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fa-solid fa-user-alt-slash"></i>
                         <span data-key="t-apps">Students</span>
@@ -80,6 +86,7 @@
 
                     </ul>
                 </li>
+                @endrole
 
 {{--                <li>--}}
 {{--                    <a href="javascript: void(0);" class="has-arrow">--}}

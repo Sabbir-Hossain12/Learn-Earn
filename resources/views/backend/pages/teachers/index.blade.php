@@ -40,7 +40,7 @@
 {{--                       @can('Create Admin')--}}
 {{--                       @if(Auth::guard('admin')->user()->can('Create Admin'))--}}
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAdminModal">
-                                Add Teacher 
+                                Add Teacher
                             </button>
 {{--                        @endcan--}}
 {{--                        @endif--}}
@@ -58,7 +58,7 @@
                                 <th>Role</th>
                                 <th>Status</th>
                                 <th>Actions</th>
-                                    
+
                             </tr>
                             </thead>
                             <tbody>
@@ -103,7 +103,7 @@
                             <label  class="col-form-label">Teacher Description</label>
                             <textarea type="text" class="form-control"  name="short_desc" ></textarea>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="email" class="col-form-label">Email</label>
                             <input type="text" class="form-control" id="email" name="email" placeholder="xyz@gmail.com">
@@ -128,7 +128,7 @@
                                 @endforelse
                             </select>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="password" class="col-form-label">Password</label>
                             <input type="password" class="form-control" name="password" id="password">
@@ -167,12 +167,12 @@
                             <label  class="col-form-label">Teacher Title</label>
                             <input type="text" class="form-control" id="eInstructor_title"  name="instructor_title" placeholder="4th Year, DU">
                         </div>
-                        
+
                         <div class="mb-3">
                             <label  class="col-form-label">Teacher Description</label>
                             <textarea type="text" class="form-control" id="eShort_desc"  name="short_desc" ></textarea>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="eEmail" class="col-form-label">Email</label>
                             <input type="text" id="eEmail" class="form-control" name="email">
@@ -186,21 +186,21 @@
                             <label for="profile_image" class="col-form-label">Profile Image</label>
                             <input type="file" class="form-control" id="eProfile_image" name="profile_image"
                                    oninput="profileImg.src=window.URL.createObjectURL(this.files[0])">
-                            
+
                             <div id="profileImgPrev" class="mt-1">
-                                
+
                             </div>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="eType" class="col-form-label">Roles</label>
                             <select name="role" id="rolesId" class="form-control">
-                                
-                              
-                                
+
+
+
                             </select>
                         </div>
-                      
+
                         <input id="id" type="number" hidden>
 
                         <div class="modal-footer">
@@ -224,10 +224,10 @@
     <script>
 
         $(document).ready(function () {
-            
+
             var token = $("input[name='_token']").val();
 
-            //Show Data through Datatable 
+            //Show Data through Datatable
             let adminTable = $('#adminTable').DataTable({
                 order: [
                     [0, 'asc']
@@ -276,9 +276,9 @@
             // Create Admin
             $('#createAdmin').submit(function (e) {
                 e.preventDefault();
-            
+
                 let formData = new FormData(this);
-            
+
                 $.ajax({
                     type: "POST",
                     headers: {
@@ -298,27 +298,46 @@
                                 text: "Teacher Added !",
                                 icon: "success"
                             })
-            
-            
+
+
                         }
                     },
                     error: function (err) {
                         console.error('Error:', err);
-                        swal.fire({
-                            title: "Failed",
-                            text: "Something Went Wrong !",
-                            icon: "error"
-                        })
-                        // Optionally, handle error behavior like showing an error message
+                        if (err.status === 422) { // Validation error
+                            let errors = err.responseJSON.errors;
+                            let firstError = '';
+
+                            // Get the first error message (for alert)
+                            for (let key in errors) {
+                                if (errors.hasOwnProperty(key)) {
+                                    firstError = errors[key][0];
+                                    break;
+                                }
+                            }
+
+                            swal.fire({
+                                title: "Validation Failed",
+                                text: firstError,
+                                icon: "error"
+                            });
+
+                        } else {
+                            swal.fire({
+                                title: "Failed",
+                                text: "Something went wrong!",
+                                icon: "error"
+                            });
+                        }
                     }
                 });
             });
-            
+
             // Edit Admin Data
             $(document).on('click', '.editButton', function () {
                 let id = $(this).data('id');
                 $('#id').val(id);
-            
+
                 $.ajax(
                     {
                         type: "GET",
@@ -329,33 +348,33 @@
                         data: {
                             id: id
                         },
-            
+
                         processData: false,  // Prevent jQuery from processing the data
                         contentType: false,  // Prevent jQuery from setting contentType
                         success: function (res) {
-            
+
                             console.log(res)
                             $('#eName').val(res.data.name);
                             $('#eEmail').val(res.data.email);
                             $('#ePhone').val(res.data.phone);
                             $('#eShort_desc').val(res.data.short_desc);
                             $('#eInstructor_title').val(res.data.instructor_title);
-            
+
                             $('#profileImgPrev').empty();
                             $('#profileImgPrev').append(
                                 `<img id="profileImg" src="{{asset('')}}${res.data.profile_image}" width="100px" height="100px">`
                             );
-                            
-                            
+
+
                             $('#rolesId').empty();
                             // Append a default option (optional)
                             $('#rolesId').append('<option value="">Select a Role</option>');
-            
+
                             // Iterate over the response data and append each role as an option
                             $.each(res.roles, function(index, role) {
 
                                 let sel = res.data.roles.some(userRole => userRole.name === role.name) ? 'selected' : '';
-                                
+
                                 $('#rolesId').append(
                                     `<option value="${role.name}" ${sel}>${role.name}</option>`
                                 );
@@ -367,13 +386,13 @@
                     }
                 )
             })
-            
+
             // Update Admin Data
             $('#editAdmin').submit(function (e) {
                 e.preventDefault();
                 let id = $('#id').val();
                 let formData = new FormData(this);
-            
+
                 $.ajax({
                     type: "POST",
                     headers: {
@@ -393,8 +412,8 @@
                                 text: "Teacher Updated !",
                                 icon: "success"
                             })
-            
-            
+
+
                         }
                     },
                     error: function (err) {
@@ -408,12 +427,12 @@
                     }
                 });
             });
-            
-            
+
+
             // Delete Admin
             $(document).on('click', '#deleteAdminBtn', function () {
                 let id = $(this).data('id');
-            
+
                 swal.fire({
                     title: "Are you sure?",
                     text: "You won't be able to revert this !",
@@ -425,11 +444,11 @@
                 })
                     .then((result) => {
                         if (result.isConfirmed) {
-            
-            
+
+
                             $.ajax({
                                 type: 'DELETE',
-            
+
                                 url: "{{ url('admin/teachers') }}/" + id,
                                 data: {
                                     '_token': token
@@ -440,24 +459,24 @@
                                         text: "Teacher has been deleted.",
                                         icon: "success"
                                     });
-            
+
                                     adminTable.ajax.reload();
                                 },
                                 error: function (err) {
                                     console.log('error')
                                 }
                             })
-            
-            
+
+
                         } else {
                             swal.fire('Your Data is Safe');
                         }
-            
+
                     })
-            
-            
+
+
             })
-            
+
             // Change Teacher Status
             $(document).on('click', '#adminStatus', function () {
                 let id = $(this).data('id');
@@ -471,13 +490,13 @@
                             '_token': token,
                             id: id,
                             status: status
-            
+
                         },
                         success: function (res) {
                             adminTable.ajax.reload();
-            
+
                             if (res.status == 1) {
-            
+
                                 swal.fire(
                                     {
                                         title: 'Status Changed to Active',
@@ -489,7 +508,7 @@
                                         title: 'Status Changed to Inactive',
                                         icon: 'success'
                                     })
-            
+
                             }
                         },
                         error: function (err) {

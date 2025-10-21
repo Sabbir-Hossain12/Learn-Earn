@@ -57,6 +57,7 @@ class BasicinfoController extends Controller
         $basicInfo->course_list_title = $request->course_list_title;
         $basicInfo->register_title = $request->register_title;
         $basicInfo->register_subtitle = $request->register_subtitle;
+        $basicInfo->teacher_agreement = $request->teacher_agreement;
 
         $basicInfo->signature_author = $request->signature_author;
 
@@ -159,6 +160,7 @@ class BasicinfoController extends Controller
         $basicInfo->course_list_title = $request->course_list_title;
         $basicInfo->register_title = $request->register_title;
         $basicInfo->register_subtitle = $request->register_subtitle;
+        $basicInfo->teacher_agreement = $request->teacher_agreement;
 
 
         $basicInfo->signature_author = $request->signature_author;

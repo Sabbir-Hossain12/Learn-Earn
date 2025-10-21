@@ -265,11 +265,24 @@
                                         <div class="col-lg-6">
                                             <div>
                                                 <div class="mb-3">
-                                                    <label for="signature_author" class="form-label">Agreement
+                                                    <label for="agreement_text" class="form-label">Student Agreement
                                                         Text</label>
 
-                                                    <textarea class="form-control"
+                                                    <textarea class="form-control agreement_text"
                                                               name="agreement_text" id="agreement_text">{{ $basicInfo->agreement_text ?? '' }}</textarea>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div>
+                                                <div class="mb-3">
+                                                    <label for="teacher_agreement" class="form-label">Teacher Agreement
+                                                        Text</label>
+
+                                                    <textarea class="form-control agreement_text"
+                                                              name="teacher_agreement" id="teacher_agreement">{{ $basicInfo->teacher_agreement ?? '' }}</textarea>
 
                                                 </div>
                                             </div>
@@ -287,7 +300,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title text-center">Website Titles  </h4>
+                                    <h4 class="card-title text-center">Website Titles</h4>
                                 </div>
 
                                 <div class="card-body p-4">
@@ -404,6 +417,13 @@
 
                             ClassicEditor
                                 .create(document.querySelector('#agreement_text'))
+                                .catch(error => {
+                                    console.error(error);
+                                });
+
+
+                            ClassicEditor
+                                .create(document.querySelector('#teacher_agreement'))
                                 .catch(error => {
                                     console.error(error);
                                 });

@@ -28,7 +28,7 @@ class TeacherController extends Controller
 
     public function getData()
     {
-        $admins = User::role('teacher')->get();
+        $admins = User::role('teacher')->latest();
 
 //        dd($admins);
 
@@ -106,7 +106,13 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-//      dd($request->all());
+
+        $request->validate([
+           'name'  => 'string|required',
+           'email' => 'string|required|unique:users,email',
+           'phone' => 'string|required|unique:users,phone',
+        ]);
+
         $admin = new User();
         $admin->name = $request->name;
         $admin->slug = Str::slug($request->name).uniqid();
@@ -183,7 +189,7 @@ class TeacherController extends Controller
      */
     public function update(Request $request, string $id)
     {
-//        dd($request->all());
+//      dd($request->all());
         $admin = User::findOrFail($id);
 
         if ($admin) {
@@ -216,7 +222,6 @@ class TeacherController extends Controller
 
         return response()->json(['status' => 'failed', 'message' => 'Something went wrong'], 500);
     }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -251,5 +256,12 @@ class TeacherController extends Controller
         $page->save();
 
         return response()->json(['message' => 'success', 'status' => $stat, 'id' => $id]);
+    }
+
+    public function getLedger(string $id)
+    {
+      $user =  User::where('id',$id)->first();
+
+          return view('backend.pages.teachers.ledger', compact('user'));
     }
 }

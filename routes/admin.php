@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\LessonVideoController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StudentController;
@@ -60,6 +61,9 @@ Route::prefix('admin')->name('admin.')->middleware(['checkAuth'])->group(functio
     //Dashboard
     Route::resource('/dashboards', DashboardController::class)->names('dashboard');
 
+    //Profile
+    Route::resource('/profile', ProfileController::class)->names('profile');
+
     //Admin
     Route::resource('/admins', AdminController::class)->names('admin');
     Route::get('/admin/data', [AdminController::class, 'getData'])->name('admin.data');
@@ -69,6 +73,7 @@ Route::prefix('admin')->name('admin.')->middleware(['checkAuth'])->group(functio
     Route::resource('/teachers', TeacherController::class)->names('teacher');
     Route::get('/teacher/data', [TeacherController::class, 'getData'])->name('teacher.data');
     Route::post('/change-teacher-status', [TeacherController::class, 'changeTeacherStatus'])->name('teacher.status');
+    Route::get('/teacher-ledger/{id}',[TeacherController::class, 'getLedger'])->name('teacher.ledger');
 
     //Pending Teacher
     Route::resource('/teacher-registers', TeacherRegisterController::class)->names('teacher-registers');

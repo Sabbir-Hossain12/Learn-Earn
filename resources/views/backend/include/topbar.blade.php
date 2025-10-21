@@ -5,11 +5,11 @@
             <div class="navbar-brand-box">
                 <a href="" class="logo logo-dark">
                                 <span class="logo-sm">
-                                    
+
                                     <img src="{{asset($basicInfo->dark_logo)}}" alt="" width="80%" height="24">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="{{asset($basicInfo->dark_logo)}}" alt="" width="160px" height="60px"> 
+                                    <img src="{{asset($basicInfo->dark_logo)}}" alt="" width="160px" height="60px">
                                 </span>
                 </a>
 
@@ -38,8 +38,8 @@
         </div>
 
         <div class="d-flex">
-            
-          
+
+
 
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item bg-soft-light border-start border-end" id="page-header-user-dropdown"
@@ -51,7 +51,8 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
-                    <a class="dropdown-item" href=""><i class="fa-solid fa-user  font-size-16 align-middle me-1"></i> Profile</a>
+                    <a class="dropdown-item" href="{{ route('admin.profile.index') }}"><i class="fa-solid fa-user  font-size-16 align-middle me-1"></i> Profile</a>
+
                     <div class="dropdown-divider"></div>
                     <form method="post" action="{{url('admin/logout')}}">
                         @csrf
