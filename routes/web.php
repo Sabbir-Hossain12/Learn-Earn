@@ -11,6 +11,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\OrderController;
 use App\Http\Controllers\Frontend\TeacherController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\StudentMiddleware;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -96,8 +97,8 @@ Route::get('/blog-list', [BlogController::class,'blogList'])->name('blog-list');
 Route::get('/blog_details/{slug}',[BlogController::class,'blogDetails'])->name('blog-details');
 
 //Checkout and Orders
-Route::get('/checkout/{slug}', [OrderController::class,'checkoutPage'])->middleware(\App\Http\Middleware\StudentMiddleware::class)->name('checkout');
-Route::post('/order/submit', [OrderController::class,'orderSubmit'])->middleware(\App\Http\Middleware\StudentMiddleware::class)->name('order.submit');
+Route::get('/checkout/{slug}', [OrderController::class,'checkoutPage'])->middleware(StudentMiddleware::class)->name('checkout');
+Route::post('/order/submit', [OrderController::class,'orderSubmit'])->middleware(StudentMiddleware::class)->name('order.submit');
 Route::post('/apply-coupon', [OrderController::class, 'applyCoupon'])->name('apply-coupon');
 
 //pages
@@ -161,9 +162,9 @@ Route::prefix('student/dashboard')->middleware('student')->name('student.dashboa
 
     //Bkash
     // Payment Routes for bKash
-    Route::get('/bkash/payment', [App\Http\Controllers\BkashTokenizePaymentController::class,'index'])->middleware(\App\Http\Middleware\StudentMiddleware::class);
-    Route::get('/bkash/create-payment', [App\Http\Controllers\BkashTokenizePaymentController::class,'createPayment'])->middleware(\App\Http\Middleware\StudentMiddleware::class)->name('bkash-create-payment');
-    Route::get('/bkash/callback', [App\Http\Controllers\BkashTokenizePaymentController::class,'callBack'])->middleware(\App\Http\Middleware\StudentMiddleware::class)->name('bkash-callBack');
+    Route::get('/bkash/payment', [App\Http\Controllers\BkashTokenizePaymentController::class,'index'])->middleware(StudentMiddleware::class);
+    Route::get('/bkash/create-payment', [App\Http\Controllers\BkashTokenizePaymentController::class,'createPayment'])->middleware(StudentMiddleware::class)->name('bkash-create-payment');
+    Route::get('/bkash/callback', [App\Http\Controllers\BkashTokenizePaymentController::class,'callBack'])->middleware(StudentMiddleware::class)->name('bkash-callBack');
 
     //search payment
     // Route::get('/bkash/search/{trxID}', [App\Http\Controllers\BkashTokenizePaymentController::class,'searchTnx'])->name('bkash-serach');

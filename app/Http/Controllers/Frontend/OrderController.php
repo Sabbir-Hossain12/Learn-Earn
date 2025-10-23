@@ -28,7 +28,7 @@ class OrderController extends Controller
 
     public function orderSubmit(Request $request)
     {
-        // dd($request->all());
+//         dd($request->all());
 
         DB::beginTransaction();
         try {

@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Lesson;
+use App\Models\Payment;
 use App\Models\TeacherRegister;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
@@ -60,6 +62,10 @@ class TeacherController extends Controller
                 return '';
             })
             ->addColumn('action', function ($admin) {
+
+                $ledgerAction = '<a class="btn btn-sm btn-info" href="'.route('admin.teacher.ledger',$admin->id).'"
+                                    id="viewLedgerBtn">
+                                   <i class="fas fa-money-bill"></i></a>';
                 $editAction = '<a class="editButton btn btn-sm btn-primary" href="javascript:void(0)"
                                   data-id="'.$admin->id.'" data-bs-toggle="modal" data-bs-target="#editAdminModal">
                                    <i class="fas fa-edit"></i></a>';
@@ -87,7 +93,7 @@ class TeacherController extends Controller
 //
 //              }
 
-                return '<div class="d-flex gap-3"> '.$viewAction.$editAction.$deleteAction.'</div>';
+                return '<div class="d-flex gap-3"> '.$ledgerAction. $viewAction.$editAction.$deleteAction.'</div>';
             })
             ->rawColumns(['action', 'status', 'role'])
             ->make(true);
@@ -262,6 +268,41 @@ class TeacherController extends Controller
     {
       $user =  User::where('id',$id)->first();
 
-          return view('backend.pages.teachers.ledger', compact('user'));
+      $payments = Payment::where('teacher_id',$id)->latest()->get();
+
+      return view('backend.pages.teachers.ledger', compact('user','payments'));
+    }
+
+    public function paymentStore(Request $request)
+    {
+
+        try {
+            DB::beginTransaction();
+            $payment = new Payment();
+            $payment->invoiceID = uniqid();
+            $payment->transaction_id = $request->transaction_id;
+            $payment->amount = $request->amount;
+            $payment->payment_method = $request->payment_method;
+            $payment->comments = $request->comments;
+            $payment->admin_id = $request->admin_id;
+            $payment->teacher_id = $request->teacher_id;
+            $payment->save();
+
+            $user = User::findOrFail($request->teacher_id);
+            $user->account_balance += $request->amount;
+            $user->save();
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Payment Created Successfully');
+        }
+        catch (\Exception $e)
+        {
+            DB::rollBack();
+            dd($e->getMessage());
+            return redirect()->back()->with('error', 'Something went wrong');
+        }
+
+
+
     }
 }

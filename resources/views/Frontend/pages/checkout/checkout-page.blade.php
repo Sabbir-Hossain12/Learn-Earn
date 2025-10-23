@@ -53,7 +53,7 @@
     <div class="checkoutarea sp_bottom_100 sp_top_100">
         <div class="container">
             <div class="row">
-               
+
                 <div class="col-xl-6 col-lg-6 col-md-12">
                     <div class="checkoutarea__billing">
                         <div class="checkoutarea__billing__heading">
@@ -96,7 +96,7 @@
                                                    value="{{auth()->user()->address ?? ''}}" placeholder="Address">
                                         </div>
                                     </div>
-                                    
+
                                       <div class="col-xl-12">
                                         <div class="checkoutarea__inputbox w-50">
                                             <label for="coupon_code">Coupon Code (if any)</label>
@@ -114,7 +114,7 @@
 
                 <div class="col-lg-6 col-md-12 col-12">
                     <div class="checkoutarea__payment__wraper">
-                       
+
                             <div class="checkoutarea__total">
                                 <h3>Your order</h3>
 
@@ -135,7 +135,7 @@
                                             <td class="checkoutarea__ctg__type"> Subtotal</td>
                                             <td class="checkoutarea__cgt__des">{{$basicInfo->currency_symbol}} <span id="subtotalPriceText">{{$course->sale_price}}</span> </td>
                                         </tr>
-                                        
+
                                         <tr class="checkoutarea__item">
                                             <td class="checkoutarea__ctg__type"> Discount</td>
                                             <td class="checkoutarea__cgt__des"> - <span id="discountText">0</span> </td>
@@ -156,19 +156,30 @@
                                         @if($course->sale_price)
                                         <div class="checkoutarea__payment__type">
                                             <input type="radio" id="pay-toggle01" name="payment_method" value="bkash" checked>
-                                            <label for="pay-toggle01">Bkash</label>
+                                            <label for="pay-toggle01">
+                                                <img class="mx-2" src="https://downloadr2.apkmirror.com/wp-content/uploads/2020/03/5e6ab3fa58a91.png" alt="PayStation" height="50" width="50">
+                                                <span>Bkash</span>
+                                            </label>
                                         </div>
+
+                                            <div class="checkoutarea__payment__type">
+                                                <input type="radio" id="pay-toggle02" name="payment_method" value="paystation">
+                                                <label for="pay-toggle02">
+                                                    <img class="mx-2 bg-light" src="https://www.paystation.com.bd/paystation/logo/pgwlogo.png" alt="PayStation" height="50" width="50">
+                                                    <span> PAYSTATION </span>
+                                                </label>
+                                            </div>
                                         @else
                                         <div class="checkoutarea__payment__type">
                                             <input type="radio" id="pay-toggle01" name="payment_method" value="free" checked>
                                             <label for="pay-toggle01">Free</label>
                                         </div>
                                         @endif
-                                        
+
 
                                     </div>
                                     <input type="hidden" name="course_id" value="{{$course->id}}">
-                                    
+
                                     <div class="checkoutarea__payment__input__box">
                                         <button type="submit" class="default__button w-100">Place order</button>
                                     </div>
@@ -177,8 +188,8 @@
                             </div>
                     </div>
                 </div>
-               
-               
+
+
             </div>
         </div>
     </div>
@@ -193,14 +204,14 @@
 let price = {{$course->sale_price}};
 
     $('#apply_coupon').on('click', function () {
-        
-        
+
+
         const code = $('#coupon_code').val();
-        
+
         if(code.length == '0')
         {
              $('#coupon_message').text('Code can not be empty !').css('color', 'red');
-             
+
              return;
         }
 
@@ -213,23 +224,23 @@ let price = {{$course->sale_price}};
             },
             success: function (response) {
                 if (response.success) {
-                    
+
                     if(response.type == 'Percentage')
                     {
                         $('#coupon_message').text('Coupon applied! Discount: ' + response.discount + '%').css('color', 'green');
-                        
+
                         $('#discountText').text(response.discount + '%');
-                        
+
                         $('#totalPriceText').text(price - (price * response.discount)/100)
                     }
                     else
                     {
                         $('#coupon_message').text('Coupon applied! Discount: ' + response.discount + 'TK').css('color', 'green');
                         $('#discountText').text(response.discount);
-                        
+
                         $('#totalPriceText').text(price - response.discount)
                     }
-                    
+
                 } else {
                     $('#coupon_message').text(response.message).css('color', 'red');
                 }

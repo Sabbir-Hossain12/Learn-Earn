@@ -74,6 +74,7 @@ Route::prefix('admin')->name('admin.')->middleware(['checkAuth'])->group(functio
     Route::get('/teacher/data', [TeacherController::class, 'getData'])->name('teacher.data');
     Route::post('/change-teacher-status', [TeacherController::class, 'changeTeacherStatus'])->name('teacher.status');
     Route::get('/teacher-ledger/{id}',[TeacherController::class, 'getLedger'])->name('teacher.ledger');
+    Route::post('/teacher-payment',[TeacherController::class, 'paymentStore'])->name('teacher.payment-store');
 
     //Pending Teacher
     Route::resource('/teacher-registers', TeacherRegisterController::class)->names('teacher-registers');

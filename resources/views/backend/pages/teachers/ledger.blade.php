@@ -1,8 +1,10 @@
 @extends('backend.layout.master')
 
 @push('backendCss')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
+          rel="stylesheet" type="text/css">
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
+          rel="stylesheet" type="text/css">
 
     <style>
         .select2-container--open {
@@ -36,7 +38,7 @@
 
 
         {{-- //popup modal for Add Payment --}}
-        <div class="modal fade" id="mainPurchese" tabindex="-1" data-bs-backdrop="false">
+        <div class="modal fade" id="mainPurchese" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -45,45 +47,41 @@
                     </div>
                     <div class="modal-body">
 
-                        <form name="form" method="post" action="">
+                        <form name="form" method="post" action="{{ route('admin.teacher.payment-store') }}">
                             @csrf
-                            <input type="text" name="Teacher_id" value="" hidden>
+                            <input type="hidden" name="admin_id" value="{{ auth()->user()->id }}" hidden>
+                            <input type="hidden" name="teacher_id" value="{{ $user->id }}" hidden>
 
-                            <div class="form-group">
-                                <label for="date">Date</label>
-                                <input type="text" name="date" class="form-control" id="date" value="{{date('Y-m-d')}}">
-                            </div>
-                            <div class="form-group pb-2">
-                                <label for="trx_id">Trx ID</label>
-                                <input type="text" name="trx_id" class="form-control" id="trx_id">
+                            <div class="form-group mb-2">
+                                <label for="transaction_id">Trx ID</label>
+                                <input type="text" name="transaction_id" class="form-control" id="transaction_id"
+                                       required>
                             </div>
 
-                            <div class="form-group pb-2">
+                            <div class="form-group mb-2">
                                 <label for="quantity">Amount</label>
-                                <input type="text" name="amount" class="form-control" id="amount">
+                                <input type="number" min="0" name="amount" class="form-control" id="amount" required>
                             </div>
 
-                            <div class="form-group pb-2">
-                                <label for="payment_type_id">Payment Type</label>
+                            <div class="form-group mb-2">
+                                <label for="payment_method">Payment Method</label>
 
-                                <select name="payment_type_id" class="form-control" id="payment_type_id">
+                                <select name="payment_method" class="form-control" id="payment_method" required>
                                     <option value="bkash">BKash</option>
                                     <option value="nagad">Nagad</option>
                                     <option value="cash">Cash</option>
                                     <option value="bank">Bank</option>
-
                                 </select>
                             </div>
 
-
-                            <div class="form-group pb-2">
+                            <div class="form-group mb-2">
                                 <label for="comments">Comments</label>
                                 <textarea name="comments" class="form-control" id="comments"></textarea>
                             </div>
 
                             <div class="form-group" style="text-align: right">
                                 <div class="submitBtnSCourse">
-                                    <button type="submit" name="btn" class="btn btn-primary  btn-block">
+                                    <button type="submit" class="btn btn-primary  btn-block">
                                         Save
                                     </button>
                                 </div>
@@ -94,7 +92,8 @@
 
                 </div>
             </div>
-        </div><!-- End popup Modal-->
+        </div>
+        <!-- End popup Modal-->
 
         {{--      purchase/Teacher Ledger--}}
 
@@ -114,8 +113,26 @@
                                 <div><span><span
                                             class="fw-bold"> Teacher Email:</span> {{ $user->email ?? '' }} </span>
                                 </div>
-                                <div><span><span
-                                            class="fw-bold"> Teacher Address:</span> {{ $user->address ?? '' }} </span>
+
+                                <div>
+                                    <span>
+                                        <span class="fw-bold"> Teacher Address:</span>
+                                        {{ $user->address ?? '' }}
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <span>
+                                        <span class="fw-bold"> Payment Method:</span>
+                                        {{ strtoupper($user->payment_method ?? '') }}
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <span>
+                                        <span class="fw-bold"> Payment Info:</span>
+                                        {{ $user->payment_info ?? '' }}
+                                    </span>
                                 </div>
                             </div>
 
@@ -128,12 +145,14 @@
                             </div>
 
 
+                            @role('admin')
                             <div class="" style="text-align: right">
                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#mainPurchese"><span style="font-weight: bold;">+</span> Add
                                     Payment
                                 </button>
                             </div>
+                            @endrole
 
                         </div>
                     </div>
@@ -141,7 +160,6 @@
                 </div>
             </div>
         </section>
-
 
         {{-- //table section for category --}}
         <section class="section">
@@ -166,29 +184,38 @@
                                     <thead class="thead-light">
                                     <tr>
                                         <th>ID</th>
-                                        <th>INV</th>
+                                        <th>Date</th>
+                                        <th>Invoice ID</th>
+                                        <th>Transaction ID</th>
                                         <th>A/C Title</th>
                                         <th>Debit</th>
                                         <th>Credit</th>
-                                        <th>Balance</th>
                                         <th>Notes</th>
                                     </tr>
                                     </thead>
 
                                     <tbody>
-
+                                    @forelse($payments as $key=>$payment)
                                         <tr class="">
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $payment->created_at->format('d M Y h:i A') }}</td>
+                                            <td>{{ $payment->invoiceID }}</td>
+                                            <td>{{ $payment->transaction_id }}</td>
                                             <td>Deposit</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
                                             <td>
-
+                                                @role('admin')
+                                                {{ $payment->amount }}
+                                                @endrole
                                             </td>
+                                            <td>
+                                                @role('teacher')
+                                                {{ $payment->amount }}
+                                                @endrole
+                                            </td>
+                                            <td>{{ $payment->comments }}</td>
                                         </tr>
+                                    @empty
+                                    @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -199,17 +226,16 @@
                 </div>
             </div>
         </section>
-
-
     </div>
-
-
 
 @endsection
 
 @push('backendJs')
+    <script src="{{asset('backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script>
-        flatpickr("#date", {});
-        flatpickr("#editdate", {});
+        $(document).ready(function () {
+            $('#purcheseinfotbl').DataTable();
+        })
     </script>
 @endpush
