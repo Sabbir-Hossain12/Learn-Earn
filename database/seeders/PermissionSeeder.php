@@ -13,12 +13,12 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions=[
-            
+
           [
               'name' => 'View Testimonial',
               'guard_name' => 'web',
           ] ,
-            
+
             [
                 'name' => 'Create Testimonial',
                 'guard_name' => 'web',
@@ -40,18 +40,18 @@ class PermissionSeeder extends Seeder
                 'name' => 'Status Testimonial',
                 'guard_name' => 'web',
             ],
-            
+
             [
                 'name'=> 'View HeroBanner',
                 'guard_name' => 'web',
             ],
-            
+
             [
                 'name'=> 'View About',
                 'guard_name' => 'web',
             ],
 
-            
+
             [
                 'name'=> 'View Blog',
                 'guard_name' => 'web',
@@ -87,17 +87,17 @@ class PermissionSeeder extends Seeder
                 'name'=> 'Edit Page',
                 'guard_name' => 'web',
             ],
-            
+
             [
                 'name'=> 'Delete Page',
                 'guard_name' => 'web',
             ],
-            
+
             [
                 'name'=> 'View Settings',
                 'guard_name' => 'web',
             ],
-            
+
             //Admins
             [
                 'name'=> 'View Admin',
@@ -108,22 +108,22 @@ class PermissionSeeder extends Seeder
                 'name'=> 'Create Admin',
                 'guard_name' => 'web',
             ],
-            
+
             [
                 'name'=> 'Edit Admin',
                 'guard_name' => 'web',
             ],
-            
+
             [
                 'name'=> 'Delete Admin',
                 'guard_name' => 'web',
             ],
-            
+
             [
                 'name'=> 'Status Admin',
                 'guard_name' => 'web',
             ],
-            
+
             //Teacher
 
             [
@@ -150,7 +150,7 @@ class PermissionSeeder extends Seeder
                 'name'=> 'Status Teacher',
                 'guard_name' => 'web',
             ],
-            
+
             //Student
 
             [
@@ -177,8 +177,8 @@ class PermissionSeeder extends Seeder
                 'name'=> 'Status Student',
                 'guard_name' => 'web',
             ],
-            
-            //Role 
+
+            //Role
 
             [
                 'name'=> 'View Role',
@@ -204,7 +204,7 @@ class PermissionSeeder extends Seeder
                 'name'=> 'Status Role',
                 'guard_name' => 'web',
             ],
-            
+
             //Permission
             [
                 'name'=> 'View Permission',
@@ -214,9 +214,14 @@ class PermissionSeeder extends Seeder
 
 
         ];
-        
+
+
         foreach ($permissions as $permission) {
-            \Spatie\Permission\Models\Permission::create($permission);
+            \Spatie\Permission\Models\Permission::updateOrCreate(
+                ['name' => $permission['name'], 'guard_name' => $permission['guard_name']],
+                $permission
+            );
         }
+
     }
 }
