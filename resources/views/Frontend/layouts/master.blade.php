@@ -17,7 +17,7 @@
     <meta property="og:title" content="{{$basicInfo->meta_title ?? 'schoolmathematics'}}">
     <meta property="og:description" content="{{$basicInfo->meta_desc ?? ''}}">
 
-    @if($basicInfo->meta_image)
+    @if($basicInfo->meta_image ?? null)
         <meta property="og:image" content="{{asset($basicInfo->meta_image)}}">
     @endif
 
@@ -28,7 +28,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{$basicInfo->meta_title ?? 'schoolmathematics'}}">
     <meta name="twitter:description" content="{{$basicInfo->meta_desc ?? ''}}">
-    @if($basicInfo->meta_image)
+    @if($basicInfo->meta_image ?? null)
         <meta name="twitter:image" content="{{asset($basicInfo->meta_image)}}">
     @endif
 

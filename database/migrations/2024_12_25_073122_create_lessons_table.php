@@ -15,20 +15,20 @@ return new class extends Migration
             $table->id();
             $table->foreignId('course_id')->nullable()->constrained('courses')->onDelete('cascade');
             $table->foreignId('subject_id')->nullable()->constrained('subjects')->onDelete('cascade');
-            
+
             $table->string('title');
             $table->string('subtitle')->nullable();
-            $table->text('slug')->unique();
+            $table->text('slug');
             $table->text('desc')->nullable();
             $table->integer('position')->default(1);
             $table->string('lesson_type')->nullable();
             $table->string('Content_url')->nullable();
             $table->string('duration')->nullable();
             $table->string('video_url')->nullable();
-            
-            
+
+
             $table->tinyInteger('status')->default(1)->comment('1=active,0=inactive');
-            
+
             $table->timestamps();
         });
     }

@@ -31,7 +31,7 @@ return new class extends Migration
             $table->decimal('withdrawal_balance', 10, 2)->default(0);
             $table->decimal('purchase_balance', 10, 2)->default(0);
             $table->integer('ref_code')->nullable()->unique();
-            $table->boolean('status')->default(0);
+//            $table->boolean('status')->default(0);
 
             $table->tinyInteger('status')->default(1)->comment('1=active,0=inactive');
             $table->timestamps();

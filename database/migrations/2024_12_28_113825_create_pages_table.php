@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('slug')->unique();
+            $table->text('slug');
             $table->text('title')->nullable();
             $table->text('img')->nullable();
             $table->text('short_desc')->nullable();
             $table->longText('long_desc')->nullable();
-            
+
             $table->string('type')->default('static')->comment('static,dynamic');
             $table->string('status')->default(1)->comment('1=active,0=inactive');
             $table->timestamps();

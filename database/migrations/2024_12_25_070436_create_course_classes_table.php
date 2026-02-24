@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('subtitle')->nullable();
-            $table->text('slug')->unique();
+            $table->text('slug');
             $table->text('desc')->nullable();
             $table->text('img')->nullable();
             $table->text('icon')->nullable();
             $table->string('position')->nullable();
-            
+
             $table->tinyInteger('is_featured')->default(0)->comment('1=active,0=inactive');
             $table->tinyInteger('status')->default(1)->comment('1=active,0=inactive');
             $table->timestamps();
