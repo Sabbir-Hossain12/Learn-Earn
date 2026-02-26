@@ -6,8 +6,11 @@ services:
     image: mysql:8.0
     container_name: laravel_mysql2
     restart: unless-stopped
-    env_file:
-      - .env.docker
+    environment:
+      MYSQL_DATABASE: learn
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_USER: learnuser
+      MYSQL_PASSWORD: pass1
     ports:
       - "3307:3306" # Maps host port 3307 to container port 3306
     volumes:

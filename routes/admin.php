@@ -79,7 +79,7 @@ Route::prefix('admin')->name('admin.')->middleware(['checkAuth'])->group(functio
     //Pending Teacher
     Route::resource('/teacher-registers', TeacherRegisterController::class)->names('teacher-registers');
     Route::get('/teacher-register/data', [TeacherRegisterController::class, 'getData'])->name('teacher-register.data');
-    Route::post('/change-teacher-register-status', [TeacherRegisterController::class, 'changeTeacherStatus'])->name('teacher.status');
+//    Route::post('/change-teacher-register-status', [TeacherRegisterController::class, 'changeTeacherStatus'])->name('teacher.status');
     //Student
     Route::resource('/students', StudentController::class)->names('student');
     Route::get('/student/data', [StudentController::class, 'getData'])->name('student.data');
